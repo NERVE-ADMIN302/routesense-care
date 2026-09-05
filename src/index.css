@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Averta';
+  src: url('/fonts/averta-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Meera Inimai';
+  src: url('/fonts/meera-inimai-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0B80-0BFF;
+}
+
+@theme {
+  --font-sans: 'Averta', 'Meera Inimai', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-brand-primary: #064e3b;
+  --color-brand-hover: #047857;
+  --color-brand-dark: #022c22;
+  --color-brand-light: #0d5c4b;
+  --color-brand-mint: #e6f4ea;
+  --color-brand-mint-text: #064e3b;
+  --color-sidebar-bg: #062c25;
+  --color-sidebar-card: #083b32;
+}
+
+:root {
+  --font-sans: 'Averta', 'Meera Inimai', sans-serif;
+}
+
+body {
+  font-family: 'Averta', 'Meera Inimai', system-ui, -apple-system, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Universal Smooth Rounded Corners Defaults */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border-radius: 0.875rem;
+}
+
+button:not(.rounded-none) {
+  border-radius: 0.875rem;
+}
+
+/* ==========================================================================
+   CINEMATIC ANIMATION ENGINE
+   Features: 3D perspective depth, lens-focus deblurring, smooth deceleration physics
+   ========================================================================== */
+
+/* Cinematic Entrance: Lens Focus & 3D Rise */
+@keyframes cinematicFadeUp {
+  0% {
+    opacity: 0;
+    transform: perspective(1200px) translateY(24px) scale(0.97) rotateX(2deg);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 0.9;
+    filter: blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1200px) translateY(0) scale(1) rotateX(0deg);
+    filter: blur(0px);
+  }
+}
+
+/* Cinematic Scale & Reveal */
+@keyframes cinematicScaleIn {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) scale(0.94) translateY(16px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* Cinematic Slide In from Left / Right */
+@keyframes cinematicSlideLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.98);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* Ambient Cinematic Hover Float */
+@keyframes cinematicFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(0.2deg);
+  }
+}
+
+/* Cinematic Ambient Pulsing Halo */
+@keyframes cinematicGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4), 0 4px 12px rgba(6, 78, 59, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0), 0 8px 24px rgba(6, 78, 59, 0.16);
+  }
+}
+
+/* Cinematic Light Sweep / Shimmer */
+@keyframes cinematicShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Pulse Beacon */
+@keyframes cinematicPulseBeacon {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+/* --- Utility Animation Classes --- */
+.animate-fade-in-up {
+  animation: cinematicFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity, filter;
+}
+
+.animate-scale-up {
+  animation: cinematicScaleIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity, filter;
+}
+
+.animate-slide-up {
+  animation: cinematicFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity, filter;
+}
+
+.animate-float {
+  animation: cinematicFloat 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: cinematicGlow 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-beacon {
+  animation: cinematicPulseBeacon 2s infinite;
+}
+
+/* Stagger Animation Delays */
+.delay-50 { animation-delay: 50ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-250 { animation-delay: 250ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-350 { animation-delay: 350ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* --- Interactive Cinematic Hover Lift --- */
+.hover-lift {
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              filter 0.25s ease;
+  will-change: transform, box-shadow;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px) scale(1.006);
+  box-shadow: 0 20px 35px -10px rgba(6, 78, 59, 0.14),
+              0 8px 16px -6px rgba(6, 78, 59, 0.08),
+              0 0 1px 1px rgba(6, 78, 59, 0.04);
+}
+
+.hover-lift:active {
+  transform: translateY(-1px) scale(0.995);
+  box-shadow: 0 8px 18px -4px rgba(6, 78, 59, 0.12);
+}
+
+/* Cinematic Button Lift with Dynamic Spring */
+.btn-lift {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.2s ease,
+              background-color 0.2s ease;
+  will-change: transform, box-shadow;
+}
+
+.btn-lift:hover {
+  transform: translateY(-2.5px) scale(1.015);
+  box-shadow: 0 10px 22px -6px rgba(6, 78, 59, 0.22),
+              0 4px 8px -3px rgba(0, 0, 0, 0.06);
+  filter: brightness(1.04);
+}
+
+.btn-lift:active {
+  transform: translateY(1px) scale(0.975);
+  box-shadow: 0 3px 8px -2px rgba(6, 78, 59, 0.15);
+  filter: brightness(0.98);
+}
