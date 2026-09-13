@@ -1,70 +1,53 @@
-import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import { Sidebar } from './Sidebar';
-import { Topbar } from './Topbar';
+import { useEffect, useRef } from 'react';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Home, Users, HeartPulse, CalendarDays, Grid2X2, Bell, ArrowLeft } from 'lucide-react';
+import { App as NativeApp } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+import { BrandLogo } from '../common/BrandLogo';
 import { Toast } from '../common/Toast';
-import { X } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 
-export const AppLayout: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const tabs = [
+  { path: '/dashboard', name: 'Home', icon: Home },
+  { path: '/patients', name: 'Patients', icon: Users },
+  { path: '/care-match', name: 'Care', icon: HeartPulse },
+  { path: '/appointments', name: 'Visits', icon: CalendarDays },
+  { path: '/services', name: 'Services', icon: Grid2X2 },
+];
+export const AppLayout = () => {
   const location = useLocation();
-
-  // If on landing page, render standard full-bleed layout without floating shell
-  const isLandingPage = location.pathname === '/';
-
-  if (isLandingPage) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex flex-col">
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Toast />
+  const navigate = useNavigate();
+  const content = useRef<HTMLElement>(null);
+  const { unreadNotificationCount, isOffline } = useApp();
+  useEffect(() => {
+    content.current?.scrollTo(0, 0);
+    if (location.hash) {
+      const frame = requestAnimationFrame(() => document.getElementById(location.hash.slice(1))?.scrollIntoView({block:'start'}));
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [location.pathname, location.hash]);
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    const listener = NativeApp.addListener('backButton', () => {
+      if (location.pathname === '/' || location.pathname === '/dashboard') NativeApp.minimizeApp();
+      else if (window.history.state?.idx > 0) navigate(-1);
+      else navigate('/dashboard');
+    });
+    return () => { listener.then(handle => handle.remove()); };
+  }, [location.pathname, navigate]);
+  const landing = location.pathname === '/';
+  const primary = tabs.some(t => t.path === location.pathname);
+  const activeTab = location.pathname.startsWith('/patient') || location.pathname === '/register' ? '/patients' : location.pathname === '/triage' ? '/care-match' : tabs.some(t => t.path === location.pathname) ? location.pathname : '/services';
+  return <div className={`mobile-app ${landing ? 'is-welcome' : ''}`} data-page={location.pathname.split('/')[1]}>
+    {!landing && <header className="mobile-header">
+      <div className="mobile-brand-group">
+        {!primary && <button className="circle-button" aria-label="Go back" onClick={() => window.history.state?.idx > 0 ? navigate(-1) : navigate('/dashboard')}><ArrowLeft size={20}/></button>}
+        <button className="mobile-brand" aria-label="CareMizhi welcome page" onClick={() => navigate('/')}><BrandLogo subtitle={isOffline ? 'Offline mode' : 'Connected care'}/></button>
       </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-[#edf2f7] flex flex-col antialiased">
-      <div className="flex-1 flex p-2 sm:p-3 lg:p-3.5 gap-3 lg:gap-3.5 overflow-hidden h-screen">
-        {/* Desktop Floating Rounded Sidebar */}
-        <div className="hidden lg:flex shrink-0 h-full">
-          <Sidebar />
-        </div>
-
-        {/* Mobile Slide-over Drawer */}
-        {mobileMenuOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden flex">
-            <div
-              className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
-              onClick={() => setMobileMenuOpen(false)}
-            />
-            <div className="relative flex-1 flex flex-col max-w-xs w-full bg-[#062c25] z-10 p-3 rounded-r-3xl">
-              <div className="absolute top-3 right-3 z-20">
-                <button
-                  type="button"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-1 rounded-full text-emerald-300 hover:text-white hover:bg-emerald-900"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div onClick={() => setMobileMenuOpen(false)} className="h-full">
-                <Sidebar />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Main Application Area with Floating Rounded Topbar and Content */}
-        <div className="flex-1 flex flex-col min-w-0 h-full gap-3 overflow-hidden">
-          <Topbar onMobileMenuToggle={() => setMobileMenuOpen(true)} />
-          <main className="flex-1 overflow-y-auto pr-1">
-            <Outlet />
-          </main>
-        </div>
-      </div>
-
-      <Toast />
-    </div>
-  );
+      <button className="circle-button notification-button" aria-label={`Notifications, ${unreadNotificationCount} unread`} onClick={() => navigate('/notifications')}><Bell size={20}/>{unreadNotificationCount > 0 && <i/>}</button>
+    </header>}
+    <main ref={content} id="main-content" className={`mobile-content ${landing ? '' : 'app-pages'}`}><Outlet/></main>
+    {!landing && <nav className="mobile-dock" aria-label="Main navigation">{tabs.map(({path,name,icon:Icon}) => <NavLink key={path} to={path} className={() => `dock-item ${activeTab === path ? 'selected' : ''}`} aria-current={activeTab === path ? 'page' : undefined}><span><Icon size={21}/></span><small>{name}</small></NavLink>)}</nav>}
+    <Toast/>
+  </div>;
 };

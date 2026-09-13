@@ -93,7 +93,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('carelink_role', role);
   };
 
-  const [selectedFacility, setSelectedFacility] = useState<string>('Pollachi Primary Health Centre');
+  const [selectedFacility, setSelectedFacility] = useState<string>('Government Medical College, Thrissur');
   const [notifications, setNotifications] = useState<AppNotification[]>(INITIAL_NOTIFICATIONS);
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const [demoStep, setDemoStep] = useState<number>(1);

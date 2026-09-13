@@ -1,0 +1,7 @@
+.app-opening{position:fixed;inset:0;z-index:100;background:#e5e5e5;overflow:hidden;opacity:1;transition:opacity 900ms ease-in-out;pointer-events:none}
+.app-opening-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;pointer-events:none}
+.app-opening-video::-webkit-media-controls{display:none!important}
+.app-opening-exit{opacity:0}
+.app-opening-landing[inert]{height:100dvh;overflow:hidden}
+.app-opening-landing .animate-fade-in-up{animation:none;opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.app-opening{transition:none}}

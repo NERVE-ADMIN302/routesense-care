@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" source("./");
 
 @font-face {
   font-family: 'Averta';
@@ -18,27 +18,37 @@
 
 @theme {
   --font-sans: 'Averta', 'Meera Inimai', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --color-brand-primary: #064e3b;
-  --color-brand-hover: #047857;
-  --color-brand-dark: #022c22;
-  --color-brand-light: #0d5c4b;
-  --color-brand-mint: #e6f4ea;
-  --color-brand-mint-text: #064e3b;
-  --color-sidebar-bg: #062c25;
-  --color-sidebar-card: #083b32;
+  --color-brand-primary: #1a6ee1;
+  --color-brand-hover: #155bc2;
+  --color-brand-dark: #0e294b;
+  --color-brand-light: #469afa;
+  --color-brand-mint: #e8f4fc;
+  --color-brand-mint-text: #174b85;
+  --color-sidebar-bg: #09223e;
+  --color-sidebar-card: #123459;
 }
 
 :root {
   --font-sans: 'Averta', 'Meera Inimai', sans-serif;
+  --app-blue: #2478ed;
+  --app-blue-hover: #1a6ee1;
+  --app-ink: #152c48;
+  --app-muted: #6e8299;
+  --app-canvas: #f2f7fc;
+  --app-surface: #ffffff;
+  --app-border: #e2edf7;
+  --app-card-shadow: 0 10px 25px -5px rgba(24, 78, 140, 0.08), 0 8px 10px -6px rgba(24, 78, 140, 0.04);
+  --app-card-shadow-hover: 0 20px 35px -8px rgba(24, 78, 140, 0.14), 0 10px 15px -4px rgba(24, 78, 140, 0.06);
 }
 
 body {
   font-family: 'Averta', 'Meera Inimai', system-ui, -apple-system, sans-serif;
-  background-color: #f8fafc;
-  color: #1e293b;
+  background-color: var(--app-canvas);
+  color: var(--app-ink);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
@@ -62,36 +72,36 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #c5d7e8;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #9ab4ce;
 }
 
 /* Universal Smooth Rounded Corners Defaults */
 input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {
-  border-radius: 0.875rem;
+  border-radius: 1rem;
 }
 
 button:not(.rounded-none) {
-  border-radius: 0.875rem;
+  border-radius: 1rem;
 }
 
 /* ==========================================================================
    CINEMATIC ANIMATION ENGINE
-   Features: 3D perspective depth, lens-focus deblurring, smooth deceleration physics
+   Features: 3D perspective depth, smooth deceleration physics, dynamic stagger
    ========================================================================== */
 
 /* Cinematic Entrance: Lens Focus & 3D Rise */
 @keyframes cinematicFadeUp {
   0% {
     opacity: 0;
-    transform: perspective(1200px) translateY(24px) scale(0.97) rotateX(2deg);
-    filter: blur(4px);
+    transform: perspective(1200px) translateY(20px) scale(0.98);
+    filter: blur(3px);
   }
   60% {
     opacity: 0.9;
@@ -99,7 +109,7 @@ button:not(.rounded-none) {
   }
   100% {
     opacity: 1;
-    transform: perspective(1200px) translateY(0) scale(1) rotateX(0deg);
+    transform: perspective(1200px) translateY(0) scale(1);
     filter: blur(0px);
   }
 }
@@ -108,8 +118,8 @@ button:not(.rounded-none) {
 @keyframes cinematicScaleIn {
   0% {
     opacity: 0;
-    transform: perspective(1000px) scale(0.94) translateY(16px);
-    filter: blur(5px);
+    transform: perspective(1000px) scale(0.94) translateY(12px);
+    filter: blur(4px);
   }
   100% {
     opacity: 1;
@@ -122,8 +132,21 @@ button:not(.rounded-none) {
 @keyframes cinematicSlideLeft {
   0% {
     opacity: 0;
-    transform: translateX(-30px) scale(0.98);
-    filter: blur(4px);
+    transform: translateX(-24px) scale(0.98);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes cinematicSlideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(24px) scale(0.98);
+    filter: blur(3px);
   }
   100% {
     opacity: 1;
@@ -135,20 +158,20 @@ button:not(.rounded-none) {
 /* Ambient Cinematic Hover Float */
 @keyframes cinematicFloat {
   0%, 100% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-6px) rotate(0.2deg);
+    transform: translateY(-6px);
   }
 }
 
 /* Cinematic Ambient Pulsing Halo */
 @keyframes cinematicGlow {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4), 0 4px 12px rgba(6, 78, 59, 0.08);
+    box-shadow: 0 0 0 0 rgba(36, 120, 237, 0.4), 0 6px 16px rgba(21, 68, 128, 0.08);
   }
   50% {
-    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0), 0 8px 24px rgba(6, 78, 59, 0.16);
+    box-shadow: 0 0 0 10px rgba(36, 120, 237, 0), 0 10px 24px rgba(21, 68, 128, 0.16);
   }
 }
 
@@ -162,36 +185,63 @@ button:not(.rounded-none) {
   }
 }
 
-/* Pulse Beacon */
+/* Pulse Beacon for urgent states */
 @keyframes cinematicPulseBeacon {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7);
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    box-shadow: 0 0 0 10px rgba(225, 29, 72, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    box-shadow: 0 0 0 0 rgba(225, 29, 72, 0);
+  }
+}
+
+/* Pulse Live (for active consultations) */
+@keyframes liveDotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+/* Waveform Bar for voice dictation simulation */
+@keyframes soundWave {
+  0%, 100% {
+    height: 6px;
+  }
+  50% {
+    height: 24px;
   }
 }
 
 /* --- Utility Animation Classes --- */
 .animate-fade-in-up {
-  animation: cinematicFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: transform, opacity, filter;
+  animation: cinematicFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-scale-up {
-  animation: cinematicScaleIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: transform, opacity, filter;
+  animation: cinematicScaleIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-slide-up {
-  animation: cinematicFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: transform, opacity, filter;
+  animation: cinematicFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-left {
+  animation: cinematicSlideLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-right {
+  animation: cinematicSlideRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-float {
@@ -206,8 +256,13 @@ button:not(.rounded-none) {
   animation: cinematicPulseBeacon 2s infinite;
 }
 
+.animate-live-pulse {
+  animation: liveDotPulse 1.5s ease-in-out infinite;
+}
+
 /* Stagger Animation Delays */
 .delay-50 { animation-delay: 50ms; }
+.delay-75 { animation-delay: 75ms; }
 .delay-100 { animation-delay: 100ms; }
 .delay-150 { animation-delay: 150ms; }
 .delay-200 { animation-delay: 200ms; }
@@ -217,45 +272,101 @@ button:not(.rounded-none) {
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 
+/* Stagger cascade helper for grid/list children */
+.stagger-cascade > *:nth-child(1) { animation-delay: 40ms; }
+.stagger-cascade > *:nth-child(2) { animation-delay: 80ms; }
+.stagger-cascade > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-cascade > *:nth-child(4) { animation-delay: 160ms; }
+.stagger-cascade > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-cascade > *:nth-child(6) { animation-delay: 240ms; }
+.stagger-cascade > *:nth-child(7) { animation-delay: 280ms; }
+.stagger-cascade > *:nth-child(8) { animation-delay: 320ms; }
+.stagger-cascade > *:nth-child(9) { animation-delay: 360ms; }
+.stagger-cascade > *:nth-child(10) { animation-delay: 400ms; }
+
 /* --- Interactive Cinematic Hover Lift --- */
 .hover-lift {
-  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.25s ease,
-              filter 0.25s ease;
-  will-change: transform, box-shadow;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease,
+              background-color 0.22s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-5px) scale(1.006);
-  box-shadow: 0 20px 35px -10px rgba(6, 78, 59, 0.14),
-              0 8px 16px -6px rgba(6, 78, 59, 0.08),
-              0 0 1px 1px rgba(6, 78, 59, 0.04);
+  transform: translateY(-4px);
+  box-shadow: var(--app-card-shadow-hover);
 }
 
 .hover-lift:active {
-  transform: translateY(-1px) scale(0.995);
-  box-shadow: 0 8px 18px -4px rgba(6, 78, 59, 0.12);
+  transform: translateY(-1px);
 }
 
 /* Cinematic Button Lift with Dynamic Spring */
 .btn-lift {
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.2s ease,
-              background-color 0.2s ease;
-  will-change: transform, box-shadow;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.18s ease,
+              background-color 0.18s ease;
 }
 
 .btn-lift:hover {
-  transform: translateY(-2.5px) scale(1.015);
-  box-shadow: 0 10px 22px -6px rgba(6, 78, 59, 0.22),
-              0 4px 8px -3px rgba(0, 0, 0, 0.06);
-  filter: brightness(1.04);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px -4px rgba(24, 78, 140, 0.25),
+              0 3px 6px -2px rgba(0, 0, 0, 0.05);
+  filter: brightness(1.03);
 }
 
 .btn-lift:active {
-  transform: translateY(1px) scale(0.975);
-  box-shadow: 0 3px 8px -2px rgba(6, 78, 59, 0.15);
-  filter: brightness(0.98);
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 2px 6px -1px rgba(24, 78, 140, 0.15);
+  filter: brightness(0.97);
+}
+
+/* Frosted Glass Utilities */
+.glass-surface {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 246, 253, 0.85));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: var(--app-card-shadow);
+  border-radius: 1.5rem;
+}
+
+.clean-card {
+  background: #ffffff;
+  border: 1px solid var(--app-border);
+  border-radius: 1.5rem;
+  box-shadow: var(--app-card-shadow);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+.clean-card:hover {
+  border-color: #c9ddf2;
+  box-shadow: var(--app-card-shadow-hover);
+}
+
+/* Modern Input Focus Glow */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Accessibility: respect user prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

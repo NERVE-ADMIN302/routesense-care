@@ -102,7 +102,7 @@ export function calculateDynamicCareJourney(patient: Patient): CareJourneyStep[]
       id: 'step-3',
       stageNumber: 3,
       title: 'AI-Assisted Clinical Triage',
-      facility: 'CARELINK Decision Support',
+      facility: 'CareMizhi Decision Support',
       date: triage?.date?.split(',')[0] || 'Today',
       status: stage3Status,
       provider: 'CDSS Prioritization Engine',

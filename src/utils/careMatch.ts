@@ -42,7 +42,7 @@ export function calculateCareMatchScore(patient: Patient, facility: Facility): C
   if (facility.type === 'Rural Hospital' || facility.type === 'CHC') {
     capScore = 28;
     reasons.push("Suitable tier-2 secondary care capability for patient's condition");
-  } else if (facility.type === 'District Hospital') {
+  } else if ((facility.type === 'District Hospital' || facility.type === 'Medical College Hospital')) {
     capScore = 30;
     reasons.push('Full multi-specialty tertiary & ICU capability available');
   } else {
@@ -132,7 +132,7 @@ export function calculateCareMatchScore(patient: Patient, facility: Facility): C
   if (facility.type === 'Rural Hospital' && totalScore >= 88) {
     suitability = 'High';
     recommendation = 'BEST MATCH';
-  } else if (facility.type === 'District Hospital') {
+  } else if ((facility.type === 'District Hospital' || facility.type === 'Medical College Hospital')) {
     suitability = 'High';
     recommendation = 'SPECIALIZED TERTIARY';
   } else if (totalScore >= 70) {

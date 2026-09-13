@@ -45,6 +45,7 @@ export const MedicinePage: React.FC = () => {
       instructions: medInstructions,
     });
 
+    showToast(`Prescription for ${medName} added successfully`, 'success');
     setMedName('');
     setMedDose('');
     setActiveTab('current');
@@ -56,19 +57,24 @@ export const MedicinePage: React.FC = () => {
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs hover-lift">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Medication Management & Pharmacy
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Track active prescriptions, adherence, and PHC stock allocations
-          </p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center border border-blue-200 shadow-2xs">
+            <Pill className="w-5 h-5 text-blue-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Medication Management & Pharmacy
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              Track active prescriptions, adherence rates, and PHC pharmacy refills
+            </p>
+          </div>
         </div>
 
         <button
           type="button"
           onClick={() => setActiveTab('add')}
-          className="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-1.5 shadow-xs self-start sm:self-auto cursor-pointer btn-lift"
+          className="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shadow-xs self-start sm:self-auto cursor-pointer btn-lift transition-colors"
         >
           <Plus className="w-4 h-4" />
           <span>Add Prescription</span>
@@ -89,7 +95,7 @@ export const MedicinePage: React.FC = () => {
             onClick={() => setActiveTab(tab.id as any)}
             className={`px-5 py-2.5 rounded-t-2xl transition-all border-b-2 -mb-1 cursor-pointer ${
               activeTab === tab.id
-                ? 'border-emerald-800 text-emerald-900 font-bold bg-white shadow-2xs'
+                ? 'border-blue-600 text-blue-900 font-bold bg-white shadow-2xs'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -119,7 +125,7 @@ export const MedicinePage: React.FC = () => {
                     value={medName}
                     onChange={(e) => setMedName(e.target.value)}
                     placeholder="e.g. Atorvastatin or Telmisartan"
-                    className="w-full p-3 border rounded-2xl focus:border-emerald-700 focus:outline-hidden"
+                    className="w-full p-3 border rounded-2xl focus:border-blue-600 focus:outline-hidden"
                     required
                   />
                 </div>
@@ -132,7 +138,7 @@ export const MedicinePage: React.FC = () => {
                       value={medDose}
                       onChange={(e) => setMedDose(e.target.value)}
                       placeholder="e.g. 10 mg"
-                      className="w-full p-3 border rounded-2xl focus:border-emerald-700 focus:outline-hidden"
+                      className="w-full p-3 border rounded-2xl focus:border-blue-600 focus:outline-hidden"
                     />
                   </div>
 
@@ -141,7 +147,7 @@ export const MedicinePage: React.FC = () => {
                     <select
                       value={medFreq}
                       onChange={(e) => setMedFreq(e.target.value)}
-                      className="w-full p-3 border rounded-2xl bg-white focus:border-emerald-700 focus:outline-hidden cursor-pointer"
+                      className="w-full p-3 border rounded-2xl bg-white focus:border-blue-600 focus:outline-hidden cursor-pointer"
                     >
                       <option value="1-0-0">1-0-0 (Morning only)</option>
                       <option value="0-0-1">0-0-1 (Night only)</option>
@@ -160,7 +166,7 @@ export const MedicinePage: React.FC = () => {
                       value={medDuration}
                       onChange={(e) => setMedDuration(e.target.value)}
                       placeholder="30 days"
-                      className="w-full p-3 border rounded-2xl focus:border-emerald-700 focus:outline-hidden"
+                      className="w-full p-3 border rounded-2xl focus:border-blue-600 focus:outline-hidden"
                     />
                   </div>
                   <div>
@@ -170,7 +176,7 @@ export const MedicinePage: React.FC = () => {
                       value={medInstructions}
                       onChange={(e) => setMedInstructions(e.target.value)}
                       placeholder="Take after meals"
-                      className="w-full p-3 border rounded-2xl focus:border-emerald-700 focus:outline-hidden"
+                      className="w-full p-3 border rounded-2xl focus:border-blue-600 focus:outline-hidden"
                     />
                   </div>
                 </div>
@@ -179,13 +185,13 @@ export const MedicinePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setActiveTab('current')}
-                    className="px-5 py-2.5 border rounded-full font-semibold hover:bg-slate-50 cursor-pointer"
+                    className="px-5 py-2.5 border rounded-full font-semibold hover:bg-slate-50 cursor-pointer transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2.5 bg-emerald-800 text-white font-bold rounded-full shadow-xs cursor-pointer btn-lift"
+                    className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-xs cursor-pointer btn-lift transition-colors"
                   >
                     Add Prescription
                   </button>
@@ -199,7 +205,7 @@ export const MedicinePage: React.FC = () => {
                 <h3 className="text-base font-bold text-slate-900">
                   Active Medications ({medications.length})
                 </h3>
-                <span className="text-xs text-emerald-800 font-semibold bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                <span className="text-xs text-blue-700 font-semibold bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
                   PHC Pharmacy Dispensed
                 </span>
               </div>
@@ -226,7 +232,7 @@ export const MedicinePage: React.FC = () => {
                           {med.dose}
                         </td>
                         <td className="py-3 px-3">
-                          <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-900 font-mono font-semibold text-[11px] border border-emerald-100">
+                          <span className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-900 font-mono font-semibold text-[11px] border border-blue-100">
                             {med.frequency}
                           </span>
                         </td>
@@ -272,27 +278,27 @@ export const MedicinePage: React.FC = () => {
           </div>
 
           {/* Next Refill Card */}
-          <div className="bg-emerald-900 text-white rounded-3xl p-6 shadow-xs space-y-3 hover-lift animate-fade-in-up delay-200">
+          <div className="bg-gradient-to-br from-blue-900 via-slate-900 to-[#0e294b] text-white rounded-3xl p-6 shadow-xs space-y-3 hover-lift animate-fade-in-up delay-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <RefreshCw className="w-4 h-4 text-emerald-300" />
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-200">
+                <RefreshCw className="w-4 h-4 text-blue-300" />
+                <span className="text-xs font-bold uppercase tracking-wider text-blue-200">
                   Next Refill Due
                 </span>
               </div>
-              <span className="text-[11px] bg-emerald-800 text-emerald-100 px-3 py-0.5 rounded-full font-mono font-bold border border-emerald-700">
+              <span className="text-[11px] bg-blue-800 text-blue-100 px-3 py-0.5 rounded-full font-mono font-bold border border-blue-700">
                 In 12 Days
               </span>
             </div>
 
             <div className="text-xl font-extrabold">15 Sep 2026</div>
-            <p className="text-xs text-emerald-200/90 leading-relaxed">
+            <p className="text-xs text-blue-200/90 leading-relaxed">
               30-day supply of Amlodipine 5mg and Metformin 500mg allocated at Pollachi Primary Health Centre pharmacy desk.
             </p>
 
-            <div className="pt-2 border-t border-emerald-800 flex items-center justify-between text-xs text-emerald-300">
+            <div className="pt-2 border-t border-blue-800 flex items-center justify-between text-xs text-blue-300">
               <span>Facility: Pollachi PHC</span>
-              <span className="font-semibold bg-emerald-800/80 px-2.5 py-0.5 rounded-full">Free Govt Scheme (MTM)</span>
+              <span className="font-semibold bg-blue-800/80 px-2.5 py-0.5 rounded-full">Free Govt Scheme (MTM)</span>
             </div>
           </div>
 
@@ -303,11 +309,11 @@ export const MedicinePage: React.FC = () => {
             </h3>
             <ul className="space-y-2 text-slate-600">
               <li className="flex items-start gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5" />
+                <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0 mt-1.5" />
                 <span>Take Amlodipine every morning at fixed time. Never skip doses.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5" />
+                <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0 mt-1.5" />
                 <span>Take Metformin immediately with food to avoid stomach upset.</span>
               </li>
               <li className="flex items-start gap-2">
@@ -321,3 +327,4 @@ export const MedicinePage: React.FC = () => {
     </div>
   );
 };
+

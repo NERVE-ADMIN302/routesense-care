@@ -13,6 +13,8 @@ import {
   Scissors,
   Download,
   ExternalLink,
+  ShieldCheck,
+  CheckCircle2,
 } from 'lucide-react';
 import { useHealthcare } from '../context/HealthcareContext';
 import { PatientHeader } from '../components/common/PatientHeader';
@@ -84,16 +86,16 @@ export const MedicalHistoryPage: React.FC = () => {
       <PatientHeader />
 
       {/* Header */}
-      <div className="flex items-center gap-3 bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs hover-lift">
+      <div className="flex items-center gap-3 bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs hover-lift">
         <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center border border-blue-200 shadow-2xs">
-          <History className="w-6 h-6" />
+          <History className="w-6 h-6 text-blue-600" />
         </div>
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Longitudinal Medical History
+            Medical History & Care Continuum
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Complete chronological care record across sub-centres, PHCs and district hospitals
+            Complete chronological care record across Sub-Centres, PHCs, and District Reference Hospitals
           </p>
         </div>
       </div>
@@ -137,7 +139,7 @@ export const MedicalHistoryPage: React.FC = () => {
 
         {/* Surgical History */}
         <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-2.5 hover-lift animate-fade-in-up delay-200">
-          <div className="flex items-center gap-2 text-purple-700 font-bold text-xs uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-indigo-700 font-bold text-xs uppercase tracking-wider">
             <Scissors className="w-4 h-4" />
             <span>Surgeries & Procedures</span>
           </div>
@@ -159,7 +161,7 @@ export const MedicalHistoryPage: React.FC = () => {
           <span className="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-mono font-bold">6 Total Encounters</span>
         </div>
 
-        <div className="relative pl-6 sm:pl-8 space-y-8 before:absolute before:left-2.5 sm:before:left-3.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-emerald-200">
+        <div className="relative pl-6 sm:pl-8 space-y-8 before:absolute before:left-2.5 sm:before:left-3.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-blue-200">
           {visits.map((v, idx) => (
             <div key={idx} className="relative group animate-fade-in-up delay-100">
               {/* Timeline Dot */}
@@ -167,14 +169,14 @@ export const MedicalHistoryPage: React.FC = () => {
                 className={`absolute -left-6 sm:-left-8 top-1.5 w-4 h-4 rounded-full border-2 border-white shadow-xs transition-transform group-hover:scale-125 ${
                   v.type === 'Urgent'
                     ? 'bg-rose-600 ring-4 ring-rose-100'
-                    : 'bg-emerald-600 ring-4 ring-emerald-100'
+                    : 'bg-blue-600 ring-4 ring-blue-100'
                 }`}
               />
 
               <div className="p-5 rounded-3xl bg-slate-50/70 border border-slate-200/80 hover:bg-slate-50 transition-all hover-lift space-y-2.5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-mono font-bold text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
+                    <span className="text-xs font-mono font-bold text-blue-900 bg-blue-100 px-3 py-1 rounded-full border border-blue-200">
                       {v.date}
                     </span>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
@@ -207,7 +209,7 @@ export const MedicalHistoryPage: React.FC = () => {
                   <p className="text-slate-800 font-medium">
                     <strong>Findings:</strong> {v.findings}
                   </p>
-                  <p className="text-emerald-900 font-medium">
+                  <p className="text-blue-900 font-medium">
                     <strong>Clinical Action:</strong> {v.actions}
                   </p>
                 </div>
@@ -219,3 +221,4 @@ export const MedicalHistoryPage: React.FC = () => {
     </div>
   );
 };
+

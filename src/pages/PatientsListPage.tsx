@@ -4,25 +4,18 @@ import {
   Users,
   Search,
   UserPlus,
-  Filter,
   ChevronRight,
-  Heart,
-  Droplets,
-  Phone,
-  Calendar,
   Stethoscope,
   Sparkles,
-  ArrowUpDown,
-  PlusCircle,
+  X,
+  ArrowRight,
 } from 'lucide-react';
 import { useHealthcare } from '../context/HealthcareContext';
-import { useApp } from '../context/AppContext';
 import { StatusBadge } from '../components/common/StatusBadge';
 
 export const PatientsListPage: React.FC = () => {
   const navigate = useNavigate();
   const { patients, setSelectedPatientId } = useHealthcare();
-  const { t } = useApp();
 
   const [search, setSearch] = useState('');
   const [filterRisk, setFilterRisk] = useState('all');
@@ -74,211 +67,147 @@ export const PatientsListPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 text-left animate-fade-in-up">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover-lift">
+    <div className="patients-screen animate-fade-in-up">
+      {/* Page Heading */}
+      <div className="section-heading patient-page-heading">
         <div>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-200 shadow-2xs">
-              <Users className="w-6 h-6" />
-            </div>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                Patients Registry
-              </h1>
-              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                {patients.length} registered patients across Coimbatore district network
-              </p>
-            </div>
-          </div>
+          <p className="eyebrow">YOUR COMMUNITY NETWORK</p>
+          <h1>People in your care.</h1>
+          <p className="page-intro">{patients.length} patient records, one connected journey.</p>
         </div>
-
         <button
-          type="button"
+          className="circle-button add-patient btn-lift"
+          aria-label="Register new patient"
           onClick={() => navigate('/register')}
-          className="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-2 shadow-xs transition-colors self-start sm:self-auto cursor-pointer btn-lift"
         >
-          <UserPlus className="w-4 h-4" />
-          <span>Register New Patient</span>
+          <UserPlus size={22} />
         </button>
       </div>
 
-      {/* Search and Filters Bar */}
-      <div className="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200/80 shadow-xs hover-lift space-y-3">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-          {/* Search Input */}
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by name, ID (e.g. CL-02491), village, phone, or condition..."
-              className="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 text-xs sm:text-sm focus:border-emerald-700 focus:outline-hidden"
-            />
-          </div>
-
-          {/* Filter Dropdowns */}
-          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
-            {/* Risk filter */}
-            <select
-              value={filterRisk}
-              onChange={(e) => setFilterRisk(e.target.value)}
-              className="px-3 py-2 rounded-full border border-slate-200 bg-white cursor-pointer font-medium text-slate-700"
-            >
-              <option value="all">All Priorities</option>
-              <option value="URGENT">Urgent Risk</option>
-              <option value="HIGH">High Priority</option>
-              <option value="MODERATE">Moderate Risk</option>
-              <option value="NORMAL">Normal</option>
-            </select>
-
-            {/* Gender filter */}
-            <select
-              value={filterGender}
-              onChange={(e) => setFilterGender(e.target.value)}
-              className="px-3 py-2 rounded-full border border-slate-200 bg-white cursor-pointer font-medium text-slate-700"
-            >
-              <option value="all">All Genders</option>
-              <option value="Female">Female</option>
-              <option value="Male">Male</option>
-              <option value="Other">Other</option>
-            </select>
-
-            {/* Sort by */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="px-3 py-2 rounded-full border border-slate-200 bg-white cursor-pointer font-medium text-slate-700"
-            >
-              <option value="recent">Sort: Most Recent</option>
-              <option value="priority">Sort: Highest Priority</option>
-              <option value="name">Sort: Name (A-Z)</option>
-              <option value="age">Sort: Oldest First</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Patients Grid / Empty State */}
-      {filtered.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-slate-200/80 shadow-xs space-y-4">
-          <div className="w-16 h-16 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
-            <Users className="w-8 h-8" />
-          </div>
-          <div>
-            <h3 className="text-base font-bold text-slate-800">No matching patient records found</h3>
-            <p className="text-xs text-slate-500 mt-1">
-              Try adjusting your search keywords or clear the active priority filters.
-            </p>
-          </div>
+      {/* Search Bar with Clear Button */}
+      <div className="search-launch relative">
+        <Search size={20} className="text-blue-500 shrink-0" />
+        <input
+          aria-label="Search patients"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by name, ID, village or condition..."
+        />
+        {search && (
           <button
             type="button"
-            onClick={() => navigate('/register')}
-            className="px-5 py-2.5 rounded-full text-xs font-bold bg-emerald-800 hover:bg-emerald-900 text-white inline-flex items-center gap-2 cursor-pointer btn-lift"
+            onClick={() => setSearch('')}
+            className="p-1 rounded-full text-slate-400 hover:text-slate-600 cursor-pointer ml-auto"
           >
-            <UserPlus className="w-4 h-4" />
-            <span>Register This Patient</span>
+            <X size={16} />
           </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((p, idx) => (
-            <div
-              key={p.id}
-              onClick={() => handlePatientClick(p.id)}
-              className={`bg-white rounded-3xl p-5 sm:p-6 border transition-all hover-lift cursor-pointer flex flex-col justify-between animate-fade-in-up ${
-                p.riskStatus === 'URGENT'
-                  ? 'border-rose-300 ring-2 ring-rose-100 shadow-sm'
-                  : 'border-slate-200/80 shadow-xs hover:border-emerald-400'
-              }`}
-            >
-              <div className="space-y-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={p.photo}
-                      alt={p.name}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-emerald-100 shadow-2xs"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/assets/female_avatar.png';
-                      }}
-                    />
-                    <div>
-                      <h3 className="text-base font-bold text-slate-900 group-hover:text-emerald-900">
-                        {p.name}
-                      </h3>
-                      <p className="text-xs text-slate-500">
-                        {p.age} yrs • {p.gender}
-                      </p>
-                    </div>
-                  </div>
+        )}
+      </div>
 
-                  <StatusBadge status={p.riskStatus} size="sm" />
-                </div>
+      {/* Filter and Sort Controls */}
+      <div className="patient-filters">
+        <select
+          aria-label="Filter patient priority"
+          value={filterRisk}
+          onChange={(e) => setFilterRisk(e.target.value)}
+        >
+          <option value="all">All priorities</option>
+          <option value="URGENT">Urgent (SpO₂ &lt; 93% / Acute)</option>
+          <option value="HIGH">High priority</option>
+          <option value="MODERATE">Moderate</option>
+          <option value="NORMAL">Normal / Stable</option>
+        </select>
 
-                <div className="text-[11px] font-mono text-slate-500 bg-slate-50 px-2.5 py-1 rounded-full inline-block border border-slate-100">
-                  ID: {p.id} • {p.village}
-                </div>
+        <select
+          aria-label="Filter patient gender"
+          value={filterGender}
+          onChange={(e) => setFilterGender(e.target.value)}
+        >
+          <option value="all">All genders</option>
+          <option value="Female">Female</option>
+          <option value="Male">Male</option>
+          <option value="Other">Other</option>
+        </select>
 
-                {/* Conditions */}
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {p.knownConditions.map((c, i) => (
-                    <span
-                      key={i}
-                      className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200/60"
-                    >
-                      {c}
-                    </span>
-                  ))}
-                  {p.knownConditions.length === 0 && (
-                    <span className="text-[10px] text-slate-400 italic">No chronic pre-conditions</span>
-                  )}
-                </div>
+        <select
+          aria-label="Sort patients"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+        >
+          <option value="recent">Sort: Recent</option>
+          <option value="priority">Sort: Priority</option>
+          <option value="name">Sort: Name A–Z</option>
+          <option value="age">Sort: Age (High to Low)</option>
+        </select>
+      </div>
 
-                {/* Vitals preview */}
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 text-xs grid grid-cols-2 gap-2 mt-2">
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                      Blood Pressure
-                    </span>
-                    <span className="font-bold text-rose-700">{p.vitals.bp} mmHg</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                      SpO₂
-                    </span>
-                    <span className="font-bold text-sky-700">{p.vitals.spo2}%</span>
-                  </div>
-                </div>
-              </div>
+      <div className="section-heading">
+        <h2>Patient records</h2>
+        <span className="quiet-pill">{filtered.length} found</span>
+      </div>
 
-              {/* Bottom Actions */}
-              <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={(e) => handleTriageClick(e, p.id)}
-                    className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200 cursor-pointer"
-                  >
-                    Triage
-                  </button>
-                  <button
-                    type="button"
-                    onClick={(e) => handleCareMatchClick(e, p.id)}
-                    className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 cursor-pointer"
-                  >
-                    Match
-                  </button>
-                </div>
+      {/* Patient Cards Grid */}
+      <div className="mobile-patient-grid stagger-cascade">
+        {filtered.map((p) => (
+          <article className="mobile-patient-card animate-fade-in-up" key={p.id}>
+            <button className="patient-card-main" onClick={() => handlePatientClick(p.id)}>
+              <span className="patient-photo">
+                {p.name.charAt(0)}
+                {p.photo && (
+                  <img
+                    src={p.photo}
+                    alt=""
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                )}
+              </span>
+              <span className="min-w-0 flex-1">
+                <b>{p.name}</b>
+                <small>{p.age} yrs · {p.gender} · {p.id}</small>
+              </span>
+              <ChevronRight size={19} />
+            </button>
 
-                <div className="flex items-center gap-1 text-emerald-800 font-bold hover:text-emerald-950 transition-colors">
-                  <span>Profile</span>
-                  <ChevronRight className="w-4 h-4" />
-                </div>
-              </div>
+            <div className="patient-card-status">
+              <StatusBadge status={p.riskStatus} />
+              <span>{p.village || 'Pollachi Rural'}</span>
             </div>
-          ))}
+
+            <p className="line-clamp-2">{p.reasonForVisit || p.lastVisitReason || 'Routine health review'}</p>
+
+            <div className="patient-card-actions">
+              <button type="button" onClick={(e) => handleTriageClick(e, p.id)} className="btn-lift">
+                <Stethoscope size={16} />
+                <span>Triage</span>
+              </button>
+              <button type="button" onClick={(e) => handleCareMatchClick(e, p.id)} className="btn-lift">
+                <Sparkles size={16} />
+                <span>Find Care</span>
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {filtered.length === 0 && (
+        <div className="empty-state animate-scale-up">
+          <Users size={36} className="mx-auto text-slate-400 mb-2" />
+          <h2>No matching patients</h2>
+          <p>Try searching another keyword or clearing your filters.</p>
+          <button
+            type="button"
+            className="primary-button max-w-xs mx-auto btn-lift"
+            onClick={() => {
+              setSearch('');
+              setFilterRisk('all');
+              setFilterGender('all');
+            }}
+          >
+            <span>Reset Search & Filters</span>
+            <ArrowRight size={18} />
+          </button>
         </div>
       )}
     </div>

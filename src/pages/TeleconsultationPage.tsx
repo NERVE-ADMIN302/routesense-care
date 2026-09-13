@@ -20,17 +20,11 @@ import {
   Sparkles,
   Signal,
   CheckCircle2,
-  Bold,
-  Italic,
-  List,
-  ListOrdered,
   ArrowLeft,
   X,
   ShieldCheck,
-  Building2,
   User,
   Plus,
-  Trash2,
 } from 'lucide-react';
 import { useHealthcare } from '../context/HealthcareContext';
 import { useApp } from '../context/AppContext';
@@ -47,16 +41,13 @@ export const TeleconsultationPage: React.FC = () => {
     medications,
     addMedication,
     saveConsultation,
-    createReferralForFacility,
-    facilities,
   } = useHealthcare();
-  const { showToast, language } = useApp();
+  const { showToast } = useApp();
 
   // Call States
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoStopped, setIsVideoStopped] = useState(false);
   const [callDuration, setCallDuration] = useState(145); // Live timer
-  const [activeTab, setActiveTab] = useState<'summary' | 'vitals' | 'labs' | 'notes'>('summary');
   const [diagnosis, setDiagnosis] = useState('Acute Exacerbation of Bronchial Asthma / LRTI Evaluation');
   const [consultationNotes, setConsultationNotes] = useState('Patient presents with moderate respiratory distress. SpO2 91% on room air. Prescribed bronchodilator therapy.');
 
@@ -95,12 +86,13 @@ export const TeleconsultationPage: React.FC = () => {
       clinicalObservations: consultationNotes || 'Teleconsultation conducted. Vital signs reviewed. E-prescription issued.',
       diagnosis: diagnosis || 'Acute Bronchial Asthma / Respiratory Review',
       prescriptions: medications.length > 0 ? medications : [
-        { id: 'm-default', name: 'Salbutamol Inhaler 100mcg', dose: '100mcg', frequency: 'TDS', instructions: '2 puffs with spacer', startDate: dateStr, status: 'Active' }
+        { id: 'm-default', name: 'Salbutamol Inhaler 100mcg', dose: '100mcg', frequency: 'TDS', instructions: '2 puffs with spacer', startDate: dateStr, status: 'Active' },
       ],
       recommendedTests: ['Chest X-Ray (PA View)', 'Complete Blood Count (CBC)'],
       followUpAdvice: 'Follow-up visit with frontline ASHA in 3 days. Return to emergency if SpO2 drops below 92%.',
       notes: consultationNotes || 'Shared with receiving facility referral desk.',
     });
+    showToast('Consultation notes saved to electronic health record', 'success');
   };
 
   const handleEndCall = () => {
@@ -124,74 +116,44 @@ export const TeleconsultationPage: React.FC = () => {
   return (
     <div className="space-y-5 text-left select-none animate-fade-in-up">
       {/* Top Breadcrumb & Call Status */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => navigate(`/patient/${selectedPatient.id}`)}
-            className="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="text-xs font-bold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 cursor-pointer transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Profile</span>
           </button>
           <div className="h-4 w-[1px] bg-slate-200" />
           <div className="flex items-center gap-2">
-            <Video className="w-5 h-5 text-emerald-800" />
-            <h1 className="text-xl font-bold text-slate-900">Teleconsultation Suite</h1>
-            <span className="text-xs text-slate-400">Rural Assisted Video Link</span>
+            <div className="w-7 h-7 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center">
+              <Video className="w-4 h-4" />
+            </div>
+            <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">Teleconsultation</h1>
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">• Rural Video Link</span>
           </div>
         </div>
 
         {/* Live Call Duration Badge */}
-        <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-900 px-3.5 py-1.5 rounded-full text-xs font-bold self-start sm:self-auto">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping" />
-          <span className="font-mono text-sm">{formatTime(callDuration)}</span>
-          <span className="text-emerald-800 font-semibold">• Active Video Consult</span>
-        </div>
-      </div>
-
-      {/* Patient Banner during Call */}
-      <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover-lift">
-        <div className="flex items-center gap-3.5">
-          <img
-            src={selectedPatient.photo}
-            alt={selectedPatient.name}
-            className="w-12 h-12 rounded-full object-cover border-2 border-emerald-300 shadow-xs"
-            onError={(e) => {
-              (e.target as HTMLElement).style.display = 'none';
-            }}
-          />
-          <div>
-            <div className="flex items-center gap-2.5">
-              <h2 className="text-base sm:text-lg font-bold text-slate-900">{selectedPatient.name}</h2>
-              <span className="text-xs text-slate-500">{selectedPatient.age} yrs • {selectedPatient.gender}</span>
-              <StatusBadge status="URGENT" size="sm" />
-            </div>
-            <p className="text-xs text-slate-500 font-mono mt-0.5">
-              ID: {selectedPatient.id} • Village: {selectedPatient.village} • PHC Desk: Pollachi
-            </p>
-          </div>
-        </div>
-
-        <div className="text-xs sm:text-right border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
-          <span className="font-bold text-slate-400 uppercase tracking-wider block text-[10px]">
-            Triage Assessment
-          </span>
-          <span className="font-bold text-rose-700">{selectedPatient.reasonForVisit}</span>
-          <span className="text-slate-400 text-[11px] block">SpO₂: {selectedPatient.vitals.spo2}% | BP: {selectedPatient.vitals.bp}</span>
+        <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-900 px-3.5 py-1.5 rounded-full text-xs font-bold self-start sm:self-auto shadow-2xs">
+          <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
+          <span className="font-mono text-sm font-bold text-blue-900">{formatTime(callDuration)}</span>
+          <span className="text-blue-700 font-semibold">• Active Video Link</span>
         </div>
       </div>
 
       {/* Patient Queue & Selector Bar */}
-      <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-white p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <User className="w-4 h-4 text-emerald-700" />
-          <span className="text-xs font-bold text-slate-700">Active Patient in Consultation:</span>
+          <User className="w-4 h-4 text-blue-600" />
+          <span className="text-xs font-bold text-slate-700">Patient in Consultation:</span>
         </div>
         <select
           value={selectedPatientId}
           onChange={(e) => setSelectedPatientId(e.target.value)}
-          className="text-xs font-bold bg-slate-50 border border-slate-300 rounded-full px-4 py-2 text-slate-800 focus:outline-emerald-600 cursor-pointer"
+          className="text-xs font-bold bg-slate-50 border border-slate-300 rounded-full px-4 py-2 text-slate-800 focus:outline-blue-600 cursor-pointer"
         >
           {patients.map((p) => (
             <option key={p.id} value={p.id}>
@@ -207,7 +169,7 @@ export const TeleconsultationPage: React.FC = () => {
           <img
             src={selectedPatient.photo}
             alt={selectedPatient.name}
-            className="w-12 h-12 rounded-full object-cover border-2 border-emerald-300 shadow-xs"
+            className="w-12 h-12 rounded-2xl object-cover border-2 border-sky-200 shadow-xs"
             onError={(e) => {
               (e.target as HTMLElement).style.display = 'none';
             }}
@@ -215,21 +177,21 @@ export const TeleconsultationPage: React.FC = () => {
           <div>
             <div className="flex items-center gap-2.5">
               <h2 className="text-base sm:text-lg font-bold text-slate-900">{selectedPatient.name}</h2>
-              <span className="text-xs text-slate-500">{selectedPatient.age} yrs • {selectedPatient.gender}</span>
+              <span className="text-xs text-slate-500 font-medium">{selectedPatient.age} yrs • {selectedPatient.gender}</span>
               <StatusBadge status={selectedPatient.riskStatus} size="sm" />
             </div>
             <p className="text-xs text-slate-500 font-mono mt-0.5">
-              ID: {selectedPatient.id} • Village: {selectedPatient.village || 'Anamalai'} • Frontline Post: {selectedPatient.panchayat || 'Pollachi Sub-Centre'}
+              ID: {selectedPatient.id} • Village: {selectedPatient.village || 'Anamalai'} • Node: {selectedPatient.panchayat || 'Pollachi PHC'}
             </p>
           </div>
         </div>
 
         <div className="text-xs sm:text-right border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
           <span className="font-bold text-slate-400 uppercase tracking-wider block text-[10px]">
-            Triage Reason
+            Triage Complaint
           </span>
           <span className="font-bold text-rose-700">{selectedPatient.reasonForVisit || selectedPatient.lastVisitReason || 'General Medical Consultation'}</span>
-          <span className="text-slate-400 text-[11px] block">SpO₂: {selectedPatient.vitals.spo2}% | BP: {selectedPatient.vitals.bp} | Pulse: {selectedPatient.vitals.pulse} bpm</span>
+          <span className="text-slate-400 text-[11px] block mt-0.5 font-medium">SpO₂: {selectedPatient.vitals.spo2}% | BP: {selectedPatient.vitals.bp} | Pulse: {selectedPatient.vitals.pulse} bpm</span>
         </div>
       </div>
 
@@ -238,12 +200,12 @@ export const TeleconsultationPage: React.FC = () => {
         {/* Left Column: Video & Controls (7 Cols) */}
         <div className="lg:col-span-7 space-y-5">
           {/* Video Stream Container */}
-          <div className="relative rounded-3xl overflow-hidden bg-slate-900 border-4 border-slate-800 shadow-xl aspect-video sm:aspect-16/10 flex items-center justify-center hover-lift">
+          <div className="relative rounded-3xl overflow-hidden bg-slate-950 border-4 border-slate-900 shadow-xl aspect-video sm:aspect-16/10 flex items-center justify-center hover-lift">
             {!isVideoStopped ? (
               <img
                 src="/assets/doctor_video.png"
                 alt="Dr. Priya S. Teleconsult"
-                className="w-full h-full object-cover rounded-3xl"
+                className="w-full h-full object-cover rounded-2xl"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
                 }}
@@ -256,13 +218,13 @@ export const TeleconsultationPage: React.FC = () => {
             )}
 
             {/* Low Bandwidth HD Indicator */}
-            <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/60 backdrop-blur-xs text-white px-3 py-1 rounded-full text-[11px] font-semibold">
+            <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-[11px] font-semibold border border-white/10">
               <Signal className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Low Bandwidth Mode • 1080p</span>
+              <span>Low Bandwidth Optimized • 1080p</span>
             </div>
 
             {/* Doctor Info Pill */}
-            <div className="absolute bottom-4 left-4 bg-black/75 backdrop-blur-xs text-white px-3.5 py-2 rounded-2xl text-xs flex items-center gap-2.5">
+            <div className="absolute bottom-4 left-4 bg-black/75 backdrop-blur-md text-white px-3.5 py-2 rounded-2xl text-xs flex items-center gap-2.5 border border-white/10">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
               <div>
                 <span className="font-extrabold text-white">Dr. Priya S., DM</span>
@@ -275,21 +237,21 @@ export const TeleconsultationPage: React.FC = () => {
             {/* PIP Patient Camera Feed */}
             <div className="absolute bottom-4 right-4 w-28 sm:w-36 rounded-2xl overflow-hidden border-2 border-white/80 shadow-lg bg-slate-800">
               <img
-                src={selectedPatient.photo || '/assets/female_avatar.png'}
+                src={selectedPatient.photo || '/assets/meena_avatar.png'}
                 alt={selectedPatient.name}
-                className="w-full h-full object-cover rounded-2xl"
+                className="w-full h-full object-cover"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
                 }}
               />
               <div className="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">
-                {selectedPatient.name.split(' ')[0]} (Live Feed)
+                {selectedPatient.name.split(' ')[0]} (Live)
               </div>
             </div>
           </div>
 
           {/* Call Controls Bar */}
-          <div className="bg-white rounded-3xl p-3 sm:p-4 border border-slate-200/80 shadow-xs flex items-center justify-center gap-3 sm:gap-6 hover-lift">
+          <div className="bg-white rounded-3xl p-3 sm:p-4 border border-slate-200/80 shadow-xs flex flex-wrap items-center justify-center gap-3 sm:gap-6 hover-lift">
             <button
               type="button"
               onClick={() => setIsMuted(!isMuted)}
@@ -327,60 +289,44 @@ export const TeleconsultationPage: React.FC = () => {
               <span className="text-[11px]">Share</span>
             </button>
 
-            {/* Red End Call Button */}
+            {/* End Call Button */}
             <button
               type="button"
               onClick={handleEndCall}
-              className="px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm bg-rose-600 hover:bg-rose-700 text-white flex items-center gap-2 shadow-md transition-all hover:scale-105 cursor-pointer btn-lift"
+              className="px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm bg-rose-600 hover:bg-rose-700 text-white flex items-center gap-2 shadow-md transition-all cursor-pointer btn-lift"
             >
               <PhoneOff className="w-4 h-4" />
-              <span>Save & Complete Consult</span>
+              <span>Finish & Refer</span>
             </button>
           </div>
 
           {/* Clinical Consultation Notes Rich Editor Box */}
-          <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs space-y-3 hover-lift">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-emerald-800" />
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                  Clinical Consultation Notes & Observations
-                </h3>
-              </div>
-              <div className="flex items-center gap-1 text-slate-400">
-                <button type="button" className="p-1.5 hover:bg-slate-100 rounded-lg">
-                  <Bold className="w-3.5 h-3.5" />
-                </button>
-                <button type="button" className="p-1.5 hover:bg-slate-100 rounded-lg">
-                  <Italic className="w-3.5 h-3.5" />
-                </button>
-                <button type="button" className="p-1.5 hover:bg-slate-100 rounded-lg">
-                  <List className="w-3.5 h-3.5" />
-                </button>
-                <button type="button" className="p-1.5 hover:bg-slate-100 rounded-lg">
-                  <ListOrdered className="w-3.5 h-3.5" />
-                </button>
-              </div>
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift">
+            <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+              <FileText className="w-4 h-4 text-blue-600" />
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                Clinical Consultation Notes
+              </h3>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-600 mb-1">Provisional Diagnosis / Finding</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Provisional Diagnosis / Finding</label>
               <input
                 type="text"
                 value={diagnosis}
                 onChange={(e) => setDiagnosis(e.target.value)}
-                className="w-full p-2.5 rounded-2xl border border-slate-200 text-xs sm:text-sm focus:border-emerald-700 focus:outline-hidden font-semibold text-slate-800"
+                className="w-full p-2.5 rounded-2xl border border-slate-200 text-xs sm:text-sm focus:border-blue-600 focus:outline-hidden font-semibold text-slate-800"
                 placeholder="e.g. Acute Exacerbation of Asthma / Bronchitis"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-600 mb-1">Clinical Notes & Advice</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Clinical Notes & Advice</label>
               <textarea
                 rows={3}
                 value={consultationNotes}
                 onChange={(e) => setConsultationNotes(e.target.value)}
-                className="w-full p-3 rounded-2xl border border-slate-200 text-xs sm:text-sm focus:border-emerald-700 focus:outline-hidden"
+                className="w-full p-3 rounded-2xl border border-slate-200 text-xs sm:text-sm focus:border-blue-600 focus:outline-hidden"
                 placeholder="Clinical observations, provisional diagnosis, referral advice..."
               />
             </div>
@@ -388,17 +334,17 @@ export const TeleconsultationPage: React.FC = () => {
             {/* Prescribed Medications in this Session */}
             {medications.length > 0 && (
               <div className="pt-2 border-t border-slate-100 space-y-2">
-                <span className="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                <span className="text-xs font-bold text-blue-800 flex items-center gap-1.5">
                   <Pill className="w-3.5 h-3.5" />
                   Prescribed Medications ({medications.length})
                 </span>
                 <div className="space-y-1.5 text-xs">
                   {medications.map((m, idx) => (
-                    <div key={idx} className="p-2.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/60 flex items-center justify-between">
+                    <div key={idx} className="p-2.5 rounded-2xl bg-blue-50/70 border border-blue-200/60 flex items-center justify-between">
                       <div>
                         <span className="font-bold text-slate-900">{m.name}</span>
                         <span className="text-slate-600 ml-2">({m.dose} • {m.frequency})</span>
-                        {m.instructions && <p className="text-[11px] text-emerald-700 mt-0.5">{m.instructions}</p>}
+                        {m.instructions && <p className="text-[11px] text-blue-700 mt-0.5">{m.instructions}</p>}
                       </div>
                     </div>
                   ))}
@@ -406,12 +352,12 @@ export const TeleconsultationPage: React.FC = () => {
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
               <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
                 <input
                   type="checkbox"
                   defaultChecked
-                  className="rounded-lg text-emerald-600 focus:ring-emerald-500 w-4 h-4"
+                  className="rounded-lg text-blue-600 focus:ring-blue-500 w-4 h-4"
                 />
                 <span>Share with receiving facility referral desk</span>
               </label>
@@ -419,7 +365,7 @@ export const TeleconsultationPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleSaveNotes}
-                className="px-5 py-2 rounded-full text-xs font-bold bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs cursor-pointer btn-lift"
+                className="px-5 py-2.5 rounded-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs cursor-pointer btn-lift"
               >
                 Save Consultation Record
               </button>
@@ -457,12 +403,12 @@ export const TeleconsultationPage: React.FC = () => {
                 <span className="text-[9px] text-rose-600 font-semibold block">BP</span>
               </div>
 
-              <div className="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-100">
-                <Activity className="w-3.5 h-3.5 text-emerald-600 mx-auto" />
-                <div className="text-xs font-bold text-emerald-800 mt-1">
+              <div className="p-2.5 rounded-2xl bg-blue-50 border border-blue-100">
+                <Activity className="w-3.5 h-3.5 text-blue-600 mx-auto" />
+                <div className="text-xs font-bold text-blue-800 mt-1">
                   {selectedPatient.vitals.pulse}
                 </div>
-                <span className="text-[9px] text-emerald-600 font-semibold block">Pulse</span>
+                <span className="text-[9px] text-blue-600 font-semibold block">Pulse</span>
               </div>
 
               <div className="p-2.5 rounded-2xl bg-amber-50 border border-amber-100">
@@ -485,60 +431,60 @@ export const TeleconsultationPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPrescriptionModal(true)}
-                className="p-3 rounded-2xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-50 text-emerald-900 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer btn-lift"
+                className="p-3 rounded-2xl border border-sky-200 bg-sky-50/70 hover:bg-sky-100/70 text-sky-900 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer btn-lift"
               >
-                <Pill className="w-4 h-4 text-emerald-700" />
+                <Pill className="w-4 h-4 text-blue-600" />
                 <span>Add E-Prescription</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => navigate('/care-match')}
-                className="p-3 rounded-2xl border border-blue-200 bg-blue-50/60 hover:bg-blue-50 text-blue-900 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer btn-lift"
+                className="p-3 rounded-2xl border border-blue-200 bg-blue-50/70 hover:bg-blue-100/70 text-blue-900 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer btn-lift"
               >
-                <ArrowLeftRight className="w-4 h-4 text-blue-700" />
+                <ArrowLeftRight className="w-4 h-4 text-blue-600" />
                 <span>Care Match & Refer</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => navigate('/diagnostics')}
-                className="p-3 rounded-2xl border border-purple-200 bg-purple-50/60 hover:bg-purple-50 text-purple-900 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer btn-lift"
+                className="p-3 rounded-2xl border border-purple-200 bg-purple-50/70 hover:bg-purple-100/70 text-purple-900 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer btn-lift"
               >
-                <FlaskConical className="w-4 h-4 text-purple-700" />
+                <FlaskConical className="w-4 h-4 text-purple-600" />
                 <span>Order Diagnostics</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => navigate('/follow-ups')}
-                className="p-3 rounded-2xl border border-amber-200 bg-amber-50/60 hover:bg-amber-50 text-amber-900 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer btn-lift"
+                className="p-3 rounded-2xl border border-amber-200 bg-amber-50/70 hover:bg-amber-100/70 text-amber-900 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer btn-lift"
               >
-                <Calendar className="w-4 h-4 text-amber-700" />
+                <Calendar className="w-4 h-4 text-amber-600" />
                 <span>Schedule Follow-up</span>
               </button>
             </div>
           </div>
 
           {/* Referral Status Banner */}
-          <div className="bg-emerald-950 text-white rounded-3xl p-5 shadow-xs space-y-2 hover-lift">
+          <div className="bg-gradient-to-tr from-slate-900 to-blue-950 text-white rounded-3xl p-5 shadow-xs space-y-2 hover-lift">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <ArrowLeftRight className="w-4 h-4 text-emerald-300" />
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-200">
-                  Care Coordination Network
+                <ArrowLeftRight className="w-4 h-4 text-blue-300" />
+                <span className="text-xs font-bold uppercase tracking-wider text-blue-200">
+                  Care Team Node
                 </span>
               </div>
               <StatusBadge status={selectedPatient.riskStatus === 'URGENT' ? 'Urgent Priority' : 'Active Intake'} size="sm" />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-xs pt-1 text-emerald-100">
+            <div className="grid grid-cols-2 gap-2 text-xs pt-1 text-slate-300">
               <div>
-                <span className="text-emerald-400 block text-[10px]">Attending Hub</span>
+                <span className="text-blue-400 block text-[10px] font-bold">Attending Hub</span>
                 <span className="font-semibold text-white">Coimbatore District Node</span>
               </div>
               <div>
-                <span className="text-emerald-400 block text-[10px]">Consulting Specialist</span>
+                <span className="text-blue-400 block text-[10px] font-bold">Consulting Specialist</span>
                 <span className="font-semibold text-white">Dr. Priya S., DM</span>
               </div>
             </div>
@@ -548,14 +494,14 @@ export const TeleconsultationPage: React.FC = () => {
 
       {/* Quick Add Prescription Modal */}
       {showPrescriptionModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-scale-up">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in-up">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-scale-up border border-slate-200">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900">Add Electronic Prescription</h3>
               <button
                 type="button"
                 onClick={() => setShowPrescriptionModal(false)}
-                className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100 transition-colors"
+                className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -563,48 +509,58 @@ export const TeleconsultationPage: React.FC = () => {
 
             <form onSubmit={handleAddMedSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block font-bold text-slate-600 mb-1">Medicine Name *</label>
+                <label className="block font-bold text-slate-700 mb-1">Medicine Name *</label>
                 <input
                   type="text"
                   value={newMedName}
                   onChange={(e) => setNewMedName(e.target.value)}
-                  className="w-full p-3 border rounded-2xl"
+                  className="w-full p-2.5 border rounded-2xl text-xs"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-600 mb-1">Dosage</label>
+                  <label className="block font-bold text-slate-700 mb-1">Dosage</label>
                   <input
                     type="text"
                     value={newMedDose}
                     onChange={(e) => setNewMedDose(e.target.value)}
-                    className="w-full p-3 border rounded-2xl"
+                    className="w-full p-2.5 border rounded-2xl text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-600 mb-1">Frequency</label>
+                  <label className="block font-bold text-slate-700 mb-1">Frequency</label>
                   <input
                     type="text"
                     value={newMedFreq}
                     onChange={(e) => setNewMedFreq(e.target.value)}
-                    className="w-full p-3 border rounded-2xl"
+                    className="w-full p-2.5 border rounded-2xl text-xs"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">Patient Instructions</label>
+                <input
+                  type="text"
+                  value={newMedInstructions}
+                  onChange={(e) => setNewMedInstructions(e.target.value)}
+                  className="w-full p-2.5 border rounded-2xl text-xs"
+                />
               </div>
 
               <div className="flex justify-end gap-2 pt-3 border-t">
                 <button
                   type="button"
                   onClick={() => setShowPrescriptionModal(false)}
-                  className="px-4 py-2 border rounded-full font-bold hover:bg-slate-50 transition-colors btn-lift"
+                  className="px-4 py-2 border rounded-full font-bold hover:bg-slate-50 transition-colors btn-lift cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-emerald-800 text-white font-bold rounded-full hover:bg-emerald-900 transition-colors btn-lift"
+                  className="px-5 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors btn-lift cursor-pointer shadow-xs"
                 >
                   Save & Issue Prescription
                 </button>

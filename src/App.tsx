@@ -1,10 +1,11 @@
 import React from 'react';
+import { ServicesPage, NotificationsPage } from './pages/ServicesPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { HealthcareProvider } from './context/HealthcareContext';
 import { AppLayout } from './components/layout/AppLayout';
 
-import { LandingPage } from './pages/LandingPage';
+import { AppOpening } from './components/common/AppOpening';
 import { HealthWorkerDashboard } from './pages/HealthWorkerDashboard';
 import { RegisterPatientPage } from './pages/RegisterPatientPage';
 import { PatientsListPage } from './pages/PatientsListPage';
@@ -31,10 +32,10 @@ export const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<AppLayout />}>
               {/* Landing Page */}
-              <Route index element={<LandingPage />} />
+              <Route index element={<AppOpening />} />
 
               {/* Main App Routes */}
-              <Route path="dashboard" element={<HealthWorkerDashboard />} />
+              <Route path="services" element={<ServicesPage />} /><Route path="notifications" element={<NotificationsPage />} /><Route path="dashboard" element={<HealthWorkerDashboard />} />
               <Route path="register" element={<RegisterPatientPage />} />
               <Route path="patients" element={<PatientsListPage />} />
               <Route path="patient/:id" element={<PatientOverviewPage />} />
@@ -63,3 +64,4 @@ export const App: React.FC = () => {
 };
 
 export default App;
+

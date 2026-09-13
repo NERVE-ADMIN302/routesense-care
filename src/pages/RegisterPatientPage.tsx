@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   UserPlus,
-  Camera,
   MapPin,
   CheckCircle2,
   AlertCircle,
@@ -12,7 +11,6 @@ import {
   HeartPulse,
   Sparkles,
   ShieldCheck,
-  FileCheck,
 } from 'lucide-react';
 import { useHealthcare } from '../context/HealthcareContext';
 import { useApp } from '../context/AppContext';
@@ -23,15 +21,13 @@ export const RegisterPatientPage: React.FC = () => {
   const { language, t, showToast } = useApp();
 
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [photoPreview, setPhotoPreview] = useState<string>('/assets/female_avatar.png');
+  const [photoPreview] = useState<string>('/assets/meena_avatar.png');
 
   // Form State
   const [fullName, setFullName] = useState('');
-  const [dob, setDob] = useState('1985-05-20');
   const [gender, setGender] = useState<'Female' | 'Male' | 'Other'>('Female');
   const [age, setAge] = useState<number | ''>(39);
   const [phone, setPhone] = useState('+91 98420 ');
-  const [preferredLang, setPreferredLang] = useState('Tamil');
   const [consentObtained, setConsentObtained] = useState(true);
 
   // Address
@@ -44,8 +40,6 @@ export const RegisterPatientPage: React.FC = () => {
   const [knownConditions, setKnownConditions] = useState<string[]>([]);
   const [allergies, setAllergies] = useState('None');
   const [currentMeds, setCurrentMeds] = useState('None');
-  const [occupation, setOccupation] = useState('Agriculture / Self-employed');
-  const [emergencyContact, setEmergencyContact] = useState('');
   const [reasonForVisit, setReasonForVisit] = useState('');
 
   // Initial Vitals
@@ -162,36 +156,37 @@ export const RegisterPatientPage: React.FC = () => {
       reasonForVisit: reasonForVisit.trim(),
     });
 
+    showToast(`Patient ${fullName} registered successfully with ID ${newId}`, 'success');
     navigate(`/patient/${newId}`);
   };
 
   return (
     <div className="space-y-6 text-left max-w-4xl mx-auto animate-fade-in-up">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-emerald-50/70 p-5 sm:p-6 rounded-3xl border border-emerald-200 hover-lift">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-blue-50/80 via-sky-50/50 to-white p-5 sm:p-6 rounded-3xl border border-sky-200/80 shadow-xs hover-lift">
         <div>
           <button
             type="button"
             onClick={() => navigate('/patients')}
-            className="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 mb-1 transition-colors cursor-pointer"
+            className="text-xs font-bold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 mb-1 transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{t('back')}</span>
+            <span>{t('back')} to Patients</span>
           </button>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {language === 'ta' ? 'புதிய நோயாளி பதிவு' : 'Register New Patient'}
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
-            Collect verified demographic, clinical intake and consent details to initialize a CARELINK record
+            Collect demographic, clinical intake and consent details to initialize a CareMizhi record
           </p>
         </div>
 
         <button
           type="button"
           onClick={handleFillSample}
-          className="px-4 py-2 rounded-full bg-white hover:bg-emerald-100/60 border border-emerald-300 text-emerald-900 font-bold text-xs flex items-center gap-2 shadow-2xs transition-all self-start sm:self-auto cursor-pointer btn-lift"
+          className="px-4 py-2 rounded-full bg-white hover:bg-blue-50 border border-blue-200 text-blue-800 font-bold text-xs flex items-center gap-2 shadow-2xs transition-all self-start sm:self-auto cursor-pointer btn-lift"
         >
-          <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
           <span>Fill Sample Template</span>
         </button>
       </div>
@@ -199,33 +194,33 @@ export const RegisterPatientPage: React.FC = () => {
       {/* 3-Step Wizard Navigation */}
       <div className="grid grid-cols-3 gap-2 sm:gap-4">
         {[
-          { step: 1, title: '1. Basic Demographics', icon: User },
-          { step: 2, title: '2. Clinical Intake & Vitals', icon: HeartPulse },
-          { step: 3, title: '3. Verification & Consent', icon: ShieldCheck },
+          { step: 1, title: '1. Demographics', icon: User },
+          { step: 2, title: '2. Clinical Intake', icon: HeartPulse },
+          { step: 3, title: '3. Verification', icon: ShieldCheck },
         ].map((item) => {
           const Icon = item.icon;
           const isActive = currentStep === item.step;
           const isDone = currentStep > item.step;
           return (
-            <div
+            <button
               key={item.step}
+              type="button"
               onClick={() => {
                 if (item.step < currentStep || validateStep1()) setCurrentStep(item.step);
               }}
               className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-emerald-900 text-white border-emerald-900 shadow-sm font-bold'
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm font-bold'
                   : isDone
-                  ? 'bg-emerald-50 text-emerald-900 border-emerald-200 font-semibold'
-                  : 'bg-white text-slate-400 border-slate-200'
+                  ? 'bg-blue-50 text-blue-900 border-blue-200 font-semibold'
+                  : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'
               }`}
             >
               <div className="flex items-center justify-center gap-2">
                 <Icon className="w-4 h-4" />
-                <span className="text-xs sm:text-sm hidden sm:inline">{item.title}</span>
-                <span className="text-xs sm:hidden">Step {item.step}</span>
+                <span className="text-xs sm:text-sm font-bold">{item.title}</span>
               </div>
-            </div>
+            </button>
           );
         })}
       </div>
@@ -249,8 +244,8 @@ export const RegisterPatientPage: React.FC = () => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Kavitha Selvam"
-                  className={`w-full px-3.5 py-2 rounded-2xl border text-xs sm:text-sm ${
-                    errors.fullName ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-emerald-700'
+                  className={`w-full px-3.5 py-2.5 rounded-2xl border text-xs sm:text-sm ${
+                    errors.fullName ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-blue-600'
                   }`}
                 />
                 {errors.fullName && <p className="text-[11px] text-rose-600 mt-1">{errors.fullName}</p>}
@@ -265,8 +260,8 @@ export const RegisterPatientPage: React.FC = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+91 98765 43210"
-                  className={`w-full px-3.5 py-2 rounded-2xl border text-xs sm:text-sm ${
-                    errors.phone ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-emerald-700'
+                  className={`w-full px-3.5 py-2.5 rounded-2xl border text-xs sm:text-sm ${
+                    errors.phone ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-blue-600'
                   }`}
                 />
                 {errors.phone && <p className="text-[11px] text-rose-600 mt-1">{errors.phone}</p>}
@@ -283,8 +278,8 @@ export const RegisterPatientPage: React.FC = () => {
                   placeholder="e.g. 42"
                   min="1"
                   max="120"
-                  className={`w-full px-3.5 py-2 rounded-2xl border text-xs sm:text-sm ${
-                    errors.age ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-emerald-700'
+                  className={`w-full px-3.5 py-2.5 rounded-2xl border text-xs sm:text-sm ${
+                    errors.age ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-blue-600'
                   }`}
                 />
                 {errors.age && <p className="text-[11px] text-rose-600 mt-1">{errors.age}</p>}
@@ -297,7 +292,7 @@ export const RegisterPatientPage: React.FC = () => {
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value as any)}
-                  className="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs sm:text-sm bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-2xl border border-slate-200 text-xs sm:text-sm bg-white"
                 >
                   <option value="Female">Female</option>
                   <option value="Male">Male</option>
@@ -314,8 +309,8 @@ export const RegisterPatientPage: React.FC = () => {
                   value={village}
                   onChange={(e) => setVillage(e.target.value)}
                   placeholder="e.g. Kottampatti Village"
-                  className={`w-full px-3.5 py-2 rounded-2xl border text-xs sm:text-sm ${
-                    errors.village ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-emerald-700'
+                  className={`w-full px-3.5 py-2.5 rounded-2xl border text-xs sm:text-sm ${
+                    errors.village ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-blue-600'
                   }`}
                 />
                 {errors.village && <p className="text-[11px] text-rose-600 mt-1">{errors.village}</p>}
@@ -330,7 +325,7 @@ export const RegisterPatientPage: React.FC = () => {
                   value={district}
                   onChange={(e) => setDistrict(e.target.value)}
                   placeholder="Coimbatore"
-                  className="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs sm:text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-2xl border border-slate-200 text-xs sm:text-sm"
                 />
               </div>
 
@@ -343,7 +338,7 @@ export const RegisterPatientPage: React.FC = () => {
                   value={house}
                   onChange={(e) => setHouse(e.target.value)}
                   placeholder="e.g. 14, Mariamman Kovil Street"
-                  className="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs sm:text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-2xl border border-slate-200 text-xs sm:text-sm"
                 />
               </div>
             </div>
@@ -352,7 +347,7 @@ export const RegisterPatientPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleNext}
-                className="px-6 py-2.5 rounded-full font-bold text-sm bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-2 cursor-pointer btn-lift"
+                className="px-6 py-2.5 rounded-full font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 cursor-pointer btn-lift"
               >
                 <span>Continue to Clinical Intake</span>
                 <ArrowRight className="w-4 h-4" />
@@ -376,9 +371,9 @@ export const RegisterPatientPage: React.FC = () => {
                 rows={3}
                 value={reasonForVisit}
                 onChange={(e) => setReasonForVisit(e.target.value)}
-                placeholder="Describe current symptoms, duration, and chief complaints (e.g. Fever, productive cough and shortness of breath for 3 days)..."
-                className={`w-full px-3.5 py-2 rounded-2xl border text-xs sm:text-sm ${
-                  errors.reasonForVisit ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-emerald-700'
+                placeholder="Describe current symptoms, duration, and chief complaints..."
+                className={`w-full px-3.5 py-2.5 rounded-2xl border text-xs sm:text-sm ${
+                  errors.reasonForVisit ? 'border-rose-500 bg-rose-50/30' : 'border-slate-200 focus:border-blue-600'
                 }`}
               />
               {errors.reasonForVisit && <p className="text-[11px] text-rose-600 mt-1">{errors.reasonForVisit}</p>}
@@ -395,7 +390,7 @@ export const RegisterPatientPage: React.FC = () => {
                   value={bp}
                   onChange={(e) => setBp(e.target.value)}
                   placeholder="120/80"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white"
                 />
                 {errors.bp && <p className="text-[10px] text-rose-600 mt-0.5">{errors.bp}</p>}
               </div>
@@ -411,7 +406,7 @@ export const RegisterPatientPage: React.FC = () => {
                   placeholder="98"
                   min="50"
                   max="100"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white"
                 />
                 {errors.spo2 && <p className="text-[10px] text-rose-600 mt-0.5">{errors.spo2}</p>}
               </div>
@@ -425,7 +420,7 @@ export const RegisterPatientPage: React.FC = () => {
                   value={pulse}
                   onChange={(e) => setPulse(e.target.value ? Number(e.target.value) : '')}
                   placeholder="76"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white"
                 />
               </div>
 
@@ -439,7 +434,7 @@ export const RegisterPatientPage: React.FC = () => {
                   value={temp}
                   onChange={(e) => setTemp(e.target.value ? Number(e.target.value) : '')}
                   placeholder="98.6"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white"
                 />
               </div>
 
@@ -452,7 +447,7 @@ export const RegisterPatientPage: React.FC = () => {
                   value={respRate}
                   onChange={(e) => setRespRate(e.target.value ? Number(e.target.value) : '')}
                   placeholder="18"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white"
                 />
               </div>
 
@@ -465,7 +460,7 @@ export const RegisterPatientPage: React.FC = () => {
                   value={weight}
                   onChange={(e) => setWeight(e.target.value ? Number(e.target.value) : '')}
                   placeholder="60"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white"
                 />
               </div>
             </div>
@@ -492,9 +487,9 @@ export const RegisterPatientPage: React.FC = () => {
                       key={cond}
                       type="button"
                       onClick={() => toggleCondition(cond)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                         selected
-                          ? 'bg-emerald-900 text-white shadow-xs'
+                          ? 'bg-blue-600 text-white shadow-xs'
                           : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                       }`}
                     >
@@ -515,8 +510,8 @@ export const RegisterPatientPage: React.FC = () => {
                   type="text"
                   value={allergies}
                   onChange={(e) => setAllergies(e.target.value)}
-                  placeholder="e.g. Penicillin, Sulfa drugs, None"
-                  className="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs sm:text-sm"
+                  placeholder="e.g. Penicillin, None"
+                  className="w-full px-3.5 py-2.5 rounded-2xl border border-slate-200 text-xs sm:text-sm"
                 />
               </div>
 
@@ -529,7 +524,7 @@ export const RegisterPatientPage: React.FC = () => {
                   value={currentMeds}
                   onChange={(e) => setCurrentMeds(e.target.value)}
                   placeholder="e.g. Amlodipine 5mg, Metformin 500mg"
-                  className="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs sm:text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-2xl border border-slate-200 text-xs sm:text-sm"
                 />
               </div>
             </div>
@@ -538,14 +533,14 @@ export const RegisterPatientPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentStep(1)}
-                className="px-5 py-2 rounded-full text-xs font-bold border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer"
+                className="px-5 py-2.5 rounded-full text-xs font-bold border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer"
               >
                 Back
               </button>
               <button
                 type="button"
                 onClick={handleNext}
-                className="px-6 py-2.5 rounded-full font-bold text-sm bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-2 cursor-pointer btn-lift"
+                className="px-6 py-2.5 rounded-full font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 cursor-pointer btn-lift"
               >
                 <span>Continue to Verification</span>
                 <ArrowRight className="w-4 h-4" />
@@ -562,7 +557,7 @@ export const RegisterPatientPage: React.FC = () => {
             </h3>
 
             {/* Summary Card */}
-            <div className="p-4 rounded-3xl bg-slate-50 border border-slate-200 space-y-3 text-xs sm:text-sm">
+            <div className="p-5 rounded-3xl bg-slate-50 border border-slate-200 space-y-3 text-xs sm:text-sm">
               <div className="flex items-center justify-between pb-2 border-b border-slate-200">
                 <span className="font-bold text-slate-900 text-base">{fullName}</span>
                 <span className="font-semibold text-slate-500">
@@ -570,7 +565,7 @@ export const RegisterPatientPage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
                   <span className="text-slate-400 block font-medium">Contact:</span>
                   <span className="font-bold text-slate-800">{phone}</span>
@@ -593,23 +588,23 @@ export const RegisterPatientPage: React.FC = () => {
 
               <div className="pt-2 border-t border-slate-200 text-xs">
                 <span className="text-slate-400 block font-medium">Reason for Visit:</span>
-                <span className="font-medium text-slate-800">{reasonForVisit}</span>
+                <span className="font-semibold text-slate-800">{reasonForVisit}</span>
               </div>
             </div>
 
             {/* Consent Box */}
-            <div className="p-4 rounded-3xl bg-emerald-50/80 border border-emerald-200 space-y-2">
+            <div className="p-4 rounded-3xl bg-blue-50/80 border border-blue-200 space-y-2">
               <div className="flex items-start gap-3">
                 <input
                   type="checkbox"
                   id="consentCheck"
                   checked={consentObtained}
                   onChange={(e) => setConsentObtained(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded text-emerald-800 focus:ring-emerald-700 cursor-pointer"
+                  className="mt-1 w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
                 />
-                <label htmlFor="consentCheck" className="text-xs text-emerald-950 font-medium cursor-pointer">
-                  <strong className="block text-emerald-900">Patient Informed Consent Confirmed</strong>
-                  The patient or legal guardian has provided verbal/written consent to register this health profile in the CARELINK rural coordination network and share records with attending medical officers and referral facilities.
+                <label htmlFor="consentCheck" className="text-xs text-blue-950 font-medium cursor-pointer">
+                  <strong className="block text-blue-900">Patient Informed Consent Confirmed</strong>
+                  The patient or guardian has provided verbal/written consent to register this health profile in the CareMizhi rural coordination network and share records with attending medical officers and referral facilities.
                 </label>
               </div>
             </div>
@@ -618,16 +613,16 @@ export const RegisterPatientPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentStep(2)}
-                className="px-5 py-2 rounded-full text-xs font-bold border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer"
+                className="px-5 py-2.5 rounded-full text-xs font-bold border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer"
               >
                 Back
               </button>
               <button
                 type="submit"
                 disabled={!consentObtained}
-                className={`px-8 py-3 rounded-full font-extrabold text-sm flex items-center gap-2 shadow-md transition-all cursor-pointer ${
+                className={`px-8 py-3 rounded-full font-bold text-sm flex items-center gap-2 shadow-md transition-all cursor-pointer ${
                   consentObtained
-                    ? 'bg-emerald-800 hover:bg-emerald-900 text-white btn-lift'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white btn-lift'
                     : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                 }`}
               >

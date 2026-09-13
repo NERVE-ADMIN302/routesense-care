@@ -44,7 +44,7 @@ export const PatientOverviewPage: React.FC = () => {
     followUps,
     getPatientTriage,
   } = useHealthcare();
-  const { t, language } = useApp();
+  const { showToast } = useApp();
 
   const [activeTab, setActiveTab] = useState<'overview' | 'consultations' | 'diagnostics' | 'referrals' | 'followups'>('overview');
   const [isEditVitalsOpen, setIsEditVitalsOpen] = useState(false);
@@ -91,8 +91,11 @@ export const PatientOverviewPage: React.FC = () => {
       respRate: Number(editResp),
       recordedAt: 'Today, ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
     });
+    showToast(`Vitals updated for ${selectedPatient.name}`, 'success');
     setIsEditVitalsOpen(false);
   };
+
+  const isUrgent = selectedPatient.riskStatus === 'URGENT' || selectedPatient.riskStatus === 'HIGH';
 
   return (
     <div className="space-y-6 text-left select-none animate-fade-in-up">
@@ -106,7 +109,7 @@ export const PatientOverviewPage: React.FC = () => {
       </div>
 
       {/* Tabs Bar */}
-      <div className="flex items-center gap-2 border-b border-slate-200 overflow-x-auto pb-1 text-xs sm:text-sm font-semibold">
+      <div className="flex items-center gap-1.5 border-b border-slate-200 overflow-x-auto pb-1 text-xs sm:text-sm font-semibold">
         {[
           { id: 'overview', label: 'Care Overview' },
           { id: 'consultations', label: `Consultations (${patientConsultations.length})` },
@@ -118,9 +121,9 @@ export const PatientOverviewPage: React.FC = () => {
             key={tab.id}
             type="button"
             onClick={() => setActiveTab(tab.id as any)}
-            className={`px-4 py-2.5 rounded-t-2xl transition-all border-b-2 -mb-1 cursor-pointer ${
+            className={`px-4 py-2.5 rounded-t-2xl transition-all border-b-2 -mb-1 cursor-pointer shrink-0 ${
               activeTab === tab.id
-                ? 'border-emerald-800 text-emerald-900 font-bold bg-white shadow-2xs'
+                ? 'border-blue-600 text-blue-800 font-bold bg-white shadow-2xs'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -133,10 +136,10 @@ export const PatientOverviewPage: React.FC = () => {
       {activeTab === 'overview' && (
         <div className="space-y-6 animate-fade-in-up">
           {/* Active Referral Status Pill / Callout */}
-          <div className="p-4 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover-lift">
-            <div className="flex items-center gap-2.5">
+          <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-blue-50/90 via-sky-50/60 to-white border border-sky-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover-lift">
+            <div className="flex items-center gap-3">
               <span
-                className={`w-3 h-3 rounded-full shrink-0 ${
+                className={`w-3.5 h-3.5 rounded-full shrink-0 ${
                   selectedPatient.riskStatus === 'URGENT'
                     ? 'bg-rose-600 animate-ping'
                     : selectedPatient.riskStatus === 'HIGH'
@@ -145,14 +148,14 @@ export const PatientOverviewPage: React.FC = () => {
                 }`}
               />
               <div>
-                <span className="font-extrabold text-emerald-950 uppercase tracking-wider text-[11px] block">
-                  Current Coordination Status • {selectedPatient.riskStatus} PRIORITY
+                <span className="font-extrabold text-blue-950 uppercase tracking-wider text-[11px] block">
+                  Current Care Status • {selectedPatient.riskStatus} PRIORITY
                 </span>
-                <p className="text-emerald-900 font-medium mt-0.5">
+                <p className="text-slate-700 font-medium mt-0.5">
                   {patientReferral
                     ? `Active Referral #${patientReferral.id} assigned to ${patientReferral.toFacility} (${patientReferral.status})`
                     : patientTriage
-                    ? `Triage complete (${patientTriage.priority}). Care Match recommended for secondary facility.`
+                    ? `Triage complete (${patientTriage.priority}). Care Match recommended for secondary hospital.`
                     : 'Initial intake registered. AI triage assessment recommended.'}
                 </p>
               </div>
@@ -162,15 +165,15 @@ export const PatientOverviewPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(`/care-match?patientId=${selectedPatient.id}`)}
-                className="px-4 py-2 rounded-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center gap-1 shadow-2xs cursor-pointer btn-lift"
+                className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs cursor-pointer btn-lift"
               >
-                <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+                <Sparkles className="w-3.5 h-3.5 text-blue-200" />
                 <span>Care Match</span>
               </button>
               <button
                 type="button"
                 onClick={() => navigate(`/triage?patientId=${selectedPatient.id}`)}
-                className="px-4 py-2 rounded-full border border-emerald-700 text-emerald-900 hover:bg-emerald-100/50 font-bold text-xs cursor-pointer btn-lift"
+                className="px-4 py-2 rounded-full border border-blue-300 text-blue-800 hover:bg-blue-50 font-bold text-xs cursor-pointer btn-lift"
               >
                 Triage Assessment
               </button>
@@ -196,9 +199,9 @@ export const PatientOverviewPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsEditVitalsOpen(true)}
-                className="text-xs font-bold text-emerald-800 hover:text-emerald-950 flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 cursor-pointer"
               >
-                <Edit className="w-3 h-3" />
+                <Edit className="w-3.5 h-3.5" />
                 <span>Update Vitals</span>
               </button>
             </div>
@@ -257,16 +260,16 @@ export const PatientOverviewPage: React.FC = () => {
               </div>
 
               {/* Resp Rate */}
-              <div className="bg-white rounded-3xl p-4 border border-emerald-200 shadow-2xs hover-lift">
+              <div className="bg-white rounded-3xl p-4 border border-blue-200 shadow-2xs hover-lift">
                 <span className="text-[10px] font-bold text-slate-400 uppercase">Resp. Rate</span>
                 <div className="flex items-baseline gap-1 mt-1">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-emerald-900">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-blue-900">
                     {selectedPatient.vitals.respRate || 18}
                   </span>
                   <span className="text-[10px] text-slate-500">/min</span>
                 </div>
                 <div className="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-                  <Activity className="w-3.5 h-3.5 text-emerald-600" />
+                  <Activity className="w-3.5 h-3.5 text-blue-600" />
                   <span>Eupneic Baseline</span>
                 </div>
               </div>
@@ -283,7 +286,7 @@ export const PatientOverviewPage: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate(`/teleconsultation?patientId=${selectedPatient.id}`)}
-              className="px-4 py-2 rounded-full font-bold text-xs bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-1.5 cursor-pointer btn-lift"
+              className="px-4 py-2 rounded-full font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 cursor-pointer btn-lift"
             >
               <Video className="w-3.5 h-3.5" />
               <span>Start Teleconsultation</span>
@@ -296,7 +299,7 @@ export const PatientOverviewPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(`/teleconsultation?patientId=${selectedPatient.id}`)}
-                className="text-xs font-bold text-emerald-800 hover:underline cursor-pointer"
+                className="text-xs font-bold text-blue-700 hover:underline cursor-pointer"
               >
                 Schedule / Start Consultation now &gt;
               </button>
@@ -323,7 +326,7 @@ export const PatientOverviewPage: React.FC = () => {
                     <span className="text-[11px] font-bold text-slate-400 uppercase block mb-1">Prescribed Drugs:</span>
                     <div className="flex flex-wrap gap-1.5">
                       {c.prescriptions.map((m, i) => (
-                        <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200 font-semibold">
+                        <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-blue-50 text-blue-900 border border-blue-200 font-semibold">
                           💊 {m.name} ({m.frequency})
                         </span>
                       ))}
@@ -344,7 +347,7 @@ export const PatientOverviewPage: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/diagnostics')}
-              className="px-4 py-2 rounded-full font-bold text-xs bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-1.5 cursor-pointer btn-lift"
+              className="px-4 py-2 rounded-full font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 cursor-pointer btn-lift"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Order Diagnostic Test</span>
@@ -357,7 +360,7 @@ export const PatientOverviewPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/diagnostics')}
-                className="text-xs font-bold text-emerald-800 hover:underline cursor-pointer"
+                className="text-xs font-bold text-blue-700 hover:underline cursor-pointer"
               >
                 Go to Diagnostics Portal &gt;
               </button>
@@ -382,7 +385,7 @@ export const PatientOverviewPage: React.FC = () => {
                 </div>
 
                 {d.notes && <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">{d.notes}</p>}
-                {d.resultsSummary && <p className="text-xs text-emerald-950 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 font-medium">✓ Result: {d.resultsSummary}</p>}
+                {d.resultsSummary && <p className="text-xs text-blue-950 bg-blue-50 p-2.5 rounded-xl border border-blue-200 font-medium">✓ Result: {d.resultsSummary}</p>}
               </div>
             ))
           )}
@@ -393,13 +396,13 @@ export const PatientOverviewPage: React.FC = () => {
       {activeTab === 'referrals' && (
         <div className="space-y-4 animate-fade-in-up">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-slate-900">Referral Continuity Records</h3>
+            <h3 className="text-base font-bold text-slate-900">Referral History</h3>
             <button
               type="button"
               onClick={() => navigate(`/care-match?patientId=${selectedPatient.id}`)}
-              className="px-4 py-2 rounded-full font-bold text-xs bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-1.5 cursor-pointer btn-lift"
+              className="px-4 py-2 rounded-full font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 cursor-pointer btn-lift"
             >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+              <Sparkles className="w-3.5 h-3.5 text-blue-200" />
               <span>Create New Referral</span>
             </button>
           </div>
@@ -410,7 +413,7 @@ export const PatientOverviewPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(`/care-match?patientId=${selectedPatient.id}`)}
-                className="text-xs font-bold text-emerald-800 hover:underline cursor-pointer"
+                className="text-xs font-bold text-blue-700 hover:underline cursor-pointer"
               >
                 Run Care Match & Create Referral &gt;
               </button>
@@ -419,7 +422,7 @@ export const PatientOverviewPage: React.FC = () => {
             <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div>
-                  <span className="text-xs font-mono text-emerald-800 font-bold">Referral #{patientReferral.id}</span>
+                  <span className="text-xs font-mono text-blue-800 font-bold">Referral #{patientReferral.id}</span>
                   <h4 className="font-extrabold text-base text-slate-900">{patientReferral.toFacility}</h4>
                   <span className="text-xs text-slate-500">Speciality: {patientReferral.speciality}</span>
                 </div>
@@ -456,7 +459,7 @@ export const PatientOverviewPage: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/follow-ups')}
-              className="px-4 py-2 rounded-full font-bold text-xs bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-1.5 cursor-pointer btn-lift"
+              className="px-4 py-2 rounded-full font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 cursor-pointer btn-lift"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Schedule Follow-up</span>
@@ -469,7 +472,7 @@ export const PatientOverviewPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/follow-ups')}
-                className="text-xs font-bold text-emerald-800 hover:underline cursor-pointer"
+                className="text-xs font-bold text-blue-700 hover:underline cursor-pointer"
               >
                 Go to Follow-ups Dashboard &gt;
               </button>
@@ -500,14 +503,14 @@ export const PatientOverviewPage: React.FC = () => {
 
       {/* Edit Vitals Modal */}
       {isEditVitalsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in-up">
+          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 space-y-4 animate-scale-up">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <h3 className="font-bold text-base text-slate-900">Update Vitals for {selectedPatient.name}</h3>
               <button
                 type="button"
                 onClick={() => setIsEditVitalsOpen(false)}
-                className="p-1 rounded-full text-slate-400 hover:text-slate-600"
+                className="p-1 rounded-full text-slate-400 hover:text-slate-600 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -560,13 +563,13 @@ export const PatientOverviewPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsEditVitalsOpen(false)}
-                  className="px-4 py-2 rounded-full text-xs font-bold text-slate-600 hover:bg-slate-100"
+                  className="px-4 py-2 rounded-full text-xs font-bold text-slate-600 hover:bg-slate-100 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-full text-xs font-bold bg-emerald-800 hover:bg-emerald-900 text-white btn-lift cursor-pointer"
+                  className="px-5 py-2 rounded-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white btn-lift cursor-pointer"
                 >
                   Save Vitals
                 </button>

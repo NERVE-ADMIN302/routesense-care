@@ -19,8 +19,6 @@ import {
   Wifi,
   WifiOff,
   ShieldCheck,
-  Home,
-  LogOut,
   Globe,
 } from 'lucide-react';
 import { CarelinkLogo } from '../common/CarelinkLogo';
@@ -62,7 +60,6 @@ export const Sidebar: React.FC = () => {
       group: t('navGroupSystem') || 'SYSTEM',
       items: [
         { to: '/admin', label: t('navAdmin'), icon: BarChart3 },
-        { to: '/', label: 'Landing Page', icon: Home },
       ],
     },
   ];
@@ -75,23 +72,21 @@ export const Sidebar: React.FC = () => {
   }[activeRole] || { name: 'Meena', role: 'ASHA Worker', email: 'meena.asha@carelink.in', avatar: 'M', bg: 'bg-emerald-600' };
 
   return (
-    <aside className="w-64 bg-[#062c25] text-white shrink-0 flex flex-col justify-between h-full rounded-3xl border border-[#0d5c4b]/50 shadow-md overflow-hidden select-none">
+    <aside className="reference-sidebar w-64 bg-[#062c25] text-white shrink-0 flex flex-col justify-between h-full min-h-0 rounded-3xl border border-[#0d5c4b]/50 shadow-md overflow-hidden select-none">
       {/* Brand Header */}
-      <div className="p-4 pb-3 border-b border-[#0b483d]/60 flex items-center justify-between">
-        <NavLink to="/" className="block focus:outline-hidden hover:opacity-90 transition-opacity" title="Back to Landing Page / Home Portal">
-          <CarelinkLogo theme="dark" size="md" />
-        </NavLink>
+      <div className="shrink-0 p-4 pb-3 border-b border-[#0b483d]/60 flex items-center justify-between">
         <NavLink
           to="/"
-          className="p-1.5 rounded-xl bg-[#083b32] hover:bg-[#0b483d] text-emerald-300 hover:text-white border border-[#0d5c4b]/50 transition-colors"
-          title="Back to Landing Page"
+          className="block rounded-lg hover:opacity-90 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          title="CareMizhi home"
+          aria-label="CareMizhi home"
         >
-          <Home className="w-4 h-4" />
+          <CarelinkLogo theme="dark" size="md" />
         </NavLink>
       </div>
 
       {/* Grouped Navigation List */}
-      <div className="flex-1 overflow-y-auto px-3 py-3 space-y-4 scrollbar-thin">
+      <div className="reference-navigation flex-1 min-h-0 overflow-y-auto px-3 py-3 space-y-4 scrollbar-thin">
         {navGroups.map((group, gIdx) => (
           <div key={gIdx} className="space-y-1">
             <div className="px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-emerald-400/70">
@@ -128,8 +123,10 @@ export const Sidebar: React.FC = () => {
         ))}
       </div>
 
+      <div className="reference-landscape" aria-hidden="true" />
+
       {/* Bottom Status & Profile Cards */}
-      <div className="p-3 border-t border-[#0b483d]/50 bg-gradient-to-t from-[#041c18] to-transparent space-y-2.5">
+      <div className="shrink-0 p-3 border-t border-[#0b483d]/50 bg-gradient-to-t from-[#041c18] to-transparent space-y-2.5">
         {/* System Status Box (Matches screenshot) */}
         <div className="p-2.5 rounded-2xl bg-[#083b32]/80 border border-[#0d5c4b]/50">
           <div className="text-[9px] font-extrabold uppercase tracking-wider text-emerald-400/70">
@@ -182,15 +179,6 @@ export const Sidebar: React.FC = () => {
           </div>
         </div>
 
-        {/* Quick Exit to Landing Page button */}
-        <NavLink
-          to="/"
-          className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-2xl bg-[#083b32]/80 hover:bg-[#0b483d] border border-[#0d5c4b]/50 text-emerald-300 hover:text-white text-xs font-semibold transition-all shadow-xs"
-          title="Return to Welcome / Landing Page"
-        >
-          <Home className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Exit to Landing Page</span>
-        </NavLink>
       </div>
     </aside>
   );

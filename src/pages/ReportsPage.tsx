@@ -137,7 +137,7 @@ export const ReportsPage: React.FC = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search reports by keyword..."
-            className="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 text-xs focus:border-emerald-700 focus:outline-hidden"
+            className="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 text-xs focus:border-blue-600 focus:outline-hidden"
           />
         </div>
       </div>
@@ -157,7 +157,7 @@ export const ReportsPage: React.FC = () => {
             onClick={() => setActiveTab(tab.id as any)}
             className={`px-5 py-2.5 rounded-t-2xl transition-all border-b-2 -mb-1 cursor-pointer ${
               activeTab === tab.id
-                ? 'border-emerald-800 text-emerald-900 font-bold bg-white shadow-2xs'
+                ? 'border-blue-600 text-blue-900 font-bold bg-white shadow-2xs'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -193,7 +193,7 @@ export const ReportsPage: React.FC = () => {
                     key={item.id}
                     onClick={() => setSelectedReport(item)}
                     className={`cursor-pointer transition-colors ${
-                      preview.id === item.id ? 'bg-emerald-50/60 font-semibold' : 'hover:bg-slate-50'
+                      preview.id === item.id ? 'bg-blue-50/70 font-semibold' : 'hover:bg-slate-50'
                     }`}
                   >
                     <td className="py-3 px-3 font-mono text-slate-600 whitespace-nowrap">
@@ -215,7 +215,7 @@ export const ReportsPage: React.FC = () => {
                           e.stopPropagation();
                           setSelectedReport(item);
                         }}
-                        className="p-2 hover:bg-emerald-100 text-emerald-800 rounded-full mr-1 cursor-pointer transition-colors"
+                        className="p-2 hover:bg-blue-100 text-blue-800 rounded-full mr-1 cursor-pointer transition-colors"
                         title="View Report"
                       >
                         <Eye className="w-4 h-4" />
@@ -242,22 +242,22 @@ export const ReportsPage: React.FC = () => {
         {/* Right Preview Panel & AI Insights (5 Cols) */}
         <div className="lg:col-span-5 space-y-5">
           {/* AI Clinical Insights Card */}
-          <div className="bg-white rounded-3xl p-5 sm:p-6 border-2 border-emerald-100 shadow-xs space-y-3 hover-lift animate-fade-in-up delay-150">
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border-2 border-blue-100 shadow-xs space-y-3 hover-lift animate-fade-in-up delay-150">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-emerald-900 font-bold text-sm">
-                <Sparkles className="w-4 h-4 text-emerald-600" />
+              <div className="flex items-center gap-2 text-blue-900 font-bold text-sm">
+                <Sparkles className="w-4 h-4 text-blue-600" />
                 <span>AI Clinical Insights</span>
               </div>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-200">
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 border border-blue-200">
                 Supportive
               </span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-xs text-emerald-950 space-y-2">
+            <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-200 text-xs text-blue-950 space-y-2">
               <p className="font-semibold leading-relaxed">
                 “Fasting blood glucose demonstrates steady improvement from 162 mg/dL to 148 mg/dL under Metformin therapy. However, recent acute ST-segment changes on ECG mandate immediate cardiological review.”
               </p>
-              <div className="text-[10px] text-emerald-800 flex items-center gap-1.5 pt-1 font-medium">
+              <div className="text-[10px] text-blue-700 flex items-center gap-1.5 pt-1 font-medium">
                 <Info className="w-3.5 h-3.5 shrink-0" />
                 <span>AI insights are supportive only and do not replace clinical judgment.</span>
               </div>
@@ -292,7 +292,7 @@ export const ReportsPage: React.FC = () => {
               </div>
             ) : (
               <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-2">
-                <FileText className="w-10 h-10 text-emerald-800 mx-auto" />
+                <FileText className="w-10 h-10 text-blue-600 mx-auto" />
                 <p className="text-xs font-semibold text-slate-700">Official Clinical Summary Document</p>
                 <p className="text-[11px] text-slate-500">Signed with Digital Certificate (TN Public Health)</p>
               </div>
@@ -307,7 +307,7 @@ export const ReportsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => showToast(`Report downloaded: ${preview.name}`, 'success')}
-                className="flex-1 py-3 rounded-full text-xs font-bold bg-emerald-800 hover:bg-emerald-900 text-white flex items-center justify-center gap-1.5 shadow-xs cursor-pointer btn-lift"
+                className="flex-1 py-3 rounded-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-1.5 shadow-xs cursor-pointer btn-lift transition-colors"
               >
                 <Download className="w-4 h-4" />
                 <span>Download Report</span>
@@ -315,7 +315,7 @@ export const ReportsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => showToast('Secure report link copied to clipboard', 'info')}
-                className="p-3 rounded-full border border-slate-200 hover:bg-slate-50 text-slate-600 cursor-pointer btn-lift"
+                className="p-3 rounded-full border border-slate-200 hover:bg-slate-50 text-slate-600 cursor-pointer btn-lift transition-colors"
                 title="Share link"
               >
                 <Share2 className="w-4 h-4" />
@@ -327,3 +327,4 @@ export const ReportsPage: React.FC = () => {
     </div>
   );
 };
+

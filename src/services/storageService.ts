@@ -11,7 +11,7 @@ import {
   FOLLOW_UP_CASES,
   PATIENT_MEDICATIONS,
 } from '../data/mockData';
-import { Facility, COIMBATORE_FACILITIES } from '../data/facilityData';
+import { Facility, KERALA_FACILITIES } from '../data/facilityData';
 
 export interface TriageRecord {
   id: string;
@@ -77,7 +77,7 @@ export interface NotificationItem {
 
 const STORAGE_KEYS = {
   PATIENTS: 'carelink_patients',
-  FACILITIES: 'carelink_facilities',
+  FACILITIES: 'caremizhi_kerala_facilities_v1',
   REFERRALS: 'carelink_referrals',
   APPOINTMENTS: 'carelink_appointments',
   FOLLOW_UPS: 'carelink_followups',
@@ -368,8 +368,8 @@ export const StorageService = {
     } catch (e) {
       console.error('Failed to load facilities', e);
     }
-    localStorage.setItem(STORAGE_KEYS.FACILITIES, JSON.stringify(COIMBATORE_FACILITIES));
-    return COIMBATORE_FACILITIES;
+    localStorage.setItem(STORAGE_KEYS.FACILITIES, JSON.stringify(KERALA_FACILITIES));
+    return KERALA_FACILITIES;
   },
 
   saveFacilities(facilities: Facility[]): void {

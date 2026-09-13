@@ -17,6 +17,8 @@ import {
   Heart,
   Droplets,
   User,
+  Sparkles,
+  Check,
 } from 'lucide-react';
 import { useHealthcare } from '../context/HealthcareContext';
 import { useApp } from '../context/AppContext';
@@ -72,6 +74,7 @@ export const DiagnosticsPage: React.FC = () => {
       priority: orderPriority,
       notes: `${collectionType} | ${collectionDate} at ${collectionTime}. ${collectionNotes}`,
     });
+    showToast(`Diagnostic order dispatched to ${collectionType === 'District Lab' ? 'District Hospital Central Lab' : 'Pollachi PHC'}`, 'success');
   };
 
   return (
@@ -80,39 +83,39 @@ export const DiagnosticsPage: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs relative overflow-hidden hover-lift">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-800 flex items-center justify-center border border-teal-200 shadow-2xs">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center border border-indigo-200 shadow-2xs">
               <FlaskConical className="w-5 h-5" />
             </div>
             <div>
               <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-                Diagnostics
+                Diagnostics & Lab Orders
               </h1>
               <p className="text-xs sm:text-sm text-slate-500">
-                Request, track and view diagnostic test results
+                Order investigations, track pathology samples, and review clinical reports
               </p>
             </div>
           </div>
         </div>
 
         {/* Right Quote bubble */}
-        <div className="hidden lg:flex items-center gap-3 bg-teal-50/70 px-4 py-2.5 rounded-2xl border border-teal-100 max-w-sm">
-          <Droplets className="w-5 h-5 text-teal-700 shrink-0" />
-          <p className="text-xs font-semibold text-teal-950 italic">
-            “Quick diagnosis today for a brighter tomorrow”
+        <div className="hidden lg:flex items-center gap-3 bg-indigo-50/70 px-4 py-2.5 rounded-2xl border border-indigo-100 max-w-sm">
+          <Droplets className="w-5 h-5 text-indigo-600 shrink-0" />
+          <p className="text-xs font-semibold text-indigo-950 italic">
+            “Accurate diagnosis enables targeted, life-saving care”
           </p>
         </div>
       </div>
 
       {/* Patient Selector Bar */}
-      <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3 hover-lift">
         <div className="flex items-center gap-2">
-          <User className="w-4 h-4 text-emerald-700" />
+          <User className="w-4 h-4 text-blue-600" />
           <span className="text-xs font-bold text-slate-700">Ordering Diagnostics For:</span>
         </div>
         <select
           value={selectedPatientId}
           onChange={(e) => setSelectedPatientId(e.target.value)}
-          className="text-xs font-bold bg-slate-50 border border-slate-300 rounded-full px-4 py-2 text-slate-800 focus:outline-emerald-600 cursor-pointer"
+          className="text-xs font-bold bg-slate-50 border border-slate-300 rounded-full px-4 py-2 text-slate-800 focus:outline-blue-600 cursor-pointer"
         >
           {patients.map((p) => (
             <option key={p.id} value={p.id}>
@@ -127,9 +130,8 @@ export const DiagnosticsPage: React.FC = () => {
         <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto text-xs sm:text-sm font-semibold">
           {[
             { id: 'requests', label: 'Test Requests' },
-            { id: 'reports', label: 'Reports' },
-            { id: 'trends', label: 'Trends' },
-            { id: 'network', label: 'Lab Network' },
+            { id: 'reports', label: 'Reports & Results' },
+            { id: 'trends', label: 'Longitudinal Trends' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -140,7 +142,7 @@ export const DiagnosticsPage: React.FC = () => {
               }}
               className={`px-4 py-2.5 rounded-t-2xl transition-all border-b-2 -mb-1 cursor-pointer ${
                 activeTab === tab.id
-                  ? 'border-emerald-800 text-emerald-900 font-bold bg-white shadow-2xs'
+                  ? 'border-blue-600 text-blue-900 font-bold bg-white shadow-2xs'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -151,8 +153,8 @@ export const DiagnosticsPage: React.FC = () => {
 
         <button
           type="button"
-          onClick={() => showToast('Choose a test card below to add to request', 'info')}
-          className="px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-1.5 shadow-xs self-start sm:self-auto cursor-pointer btn-lift"
+          onClick={() => showToast('Click on any test card below to add to request', 'info')}
+          className="px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shadow-xs self-start sm:self-auto cursor-pointer btn-lift transition-colors"
         >
           <Plus className="w-4 h-4" />
           <span>New Test Request</span>
@@ -164,22 +166,22 @@ export const DiagnosticsPage: React.FC = () => {
         {/* Left: Common Tests Catalog & Cart (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Common Tests Selector */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-100">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-base font-bold text-slate-900">Common Tests</h3>
-                <p className="text-xs text-slate-500">Select test panels or individual tests</p>
+                <h3 className="text-base font-bold text-slate-900">Diagnostic Catalog</h3>
+                <p className="text-xs text-slate-500">Select test panels or individual diagnostic tests</p>
               </div>
 
               {/* Search input */}
               <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
                 <input
                   type="text"
                   value={testSearch}
                   onChange={(e) => setTestSearch(e.target.value)}
                   placeholder="Search tests..."
-                  className="pl-8 pr-3 py-1.5 rounded-full border border-slate-200 text-xs focus:border-emerald-700 focus:outline-hidden"
+                  className="pl-8 pr-3 py-1.5 rounded-full border border-slate-200 text-xs focus:border-blue-600 focus:outline-hidden"
                 />
               </div>
             </div>
@@ -193,7 +195,7 @@ export const DiagnosticsPage: React.FC = () => {
                   onClick={() => setTestCategory(cat)}
                   className={`px-3.5 py-1 rounded-full font-semibold transition-all shrink-0 cursor-pointer ${
                     testCategory === cat
-                      ? 'bg-emerald-900 text-white shadow-xs'
+                      ? 'bg-blue-600 text-white shadow-xs'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
@@ -213,12 +215,12 @@ export const DiagnosticsPage: React.FC = () => {
                     onClick={() => addTestToRequest(test)}
                     className={`p-3 rounded-2xl border text-center flex flex-col items-center justify-between cursor-pointer transition-all hover-lift ${
                       isSelected
-                        ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 font-bold ring-2 ring-emerald-500/20'
-                        : 'border-slate-200 hover:border-emerald-300 bg-slate-50/50'
+                        ? 'border-blue-600 bg-blue-50/80 text-blue-950 font-bold ring-2 ring-blue-500/20'
+                        : 'border-slate-200 hover:border-blue-300 bg-slate-50/50'
                     }`}
                   >
-                    <div className="w-9 h-9 rounded-2xl bg-white shadow-2xs flex items-center justify-center text-rose-500 mb-2">
-                      <Droplets className="w-4 h-4 text-emerald-700" />
+                    <div className="w-9 h-9 rounded-2xl bg-white shadow-2xs flex items-center justify-center text-blue-600 mb-2">
+                      <Droplets className="w-4 h-4 text-blue-600" />
                     </div>
                     <span className="text-xs font-bold text-slate-800 line-clamp-2 leading-tight">
                       {test.name}
@@ -231,7 +233,7 @@ export const DiagnosticsPage: React.FC = () => {
           </div>
 
           {/* Selected Tests Table */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-150">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-slate-900">
                 Selected Tests ({selectedTests.length})
@@ -240,7 +242,7 @@ export const DiagnosticsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={clearTestRequest}
-                  className="text-xs font-bold text-rose-600 hover:text-rose-800 flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-bold text-rose-600 hover:text-rose-800 flex items-center gap-1 cursor-pointer transition-colors"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Clear All</span>
@@ -273,7 +275,7 @@ export const DiagnosticsPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => removeTestFromRequest(t.id)}
-                            className="p-1 hover:bg-rose-50 text-rose-600 rounded-lg"
+                            className="p-1 hover:bg-rose-50 text-rose-600 rounded-lg transition-colors cursor-pointer"
                             title="Remove test"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -291,13 +293,13 @@ export const DiagnosticsPage: React.FC = () => {
         {/* Right: History & Sample Collection Details (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
           {/* Recent Test History */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-200">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-slate-900">Patient Test Orders ({patientDiagnostics.length})</h3>
               <button
                 type="button"
                 onClick={() => navigate('/reports')}
-                className="text-xs font-bold text-emerald-800 hover:underline cursor-pointer"
+                className="text-xs font-bold text-blue-600 hover:underline cursor-pointer"
               >
                 View Reports &gt;
               </button>
@@ -318,7 +320,7 @@ export const DiagnosticsPage: React.FC = () => {
                       <span>{order.requestedDate}</span>
                     </div>
                     {order.resultsSummary && (
-                      <p className="text-[11px] text-emerald-800 bg-emerald-50/70 p-2 rounded-xl">
+                      <p className="text-[11px] text-blue-900 bg-blue-50/70 p-2 rounded-xl border border-blue-100">
                         {order.resultsSummary}
                       </p>
                     )}
@@ -333,7 +335,7 @@ export const DiagnosticsPage: React.FC = () => {
           </div>
 
           {/* Sample Collection Details Form */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-250">
             <h3 className="text-base font-bold text-slate-900">
               Sample Collection Details
             </h3>
@@ -348,7 +350,7 @@ export const DiagnosticsPage: React.FC = () => {
                     type="text"
                     value={collectionDate}
                     onChange={(e) => setCollectionDate(e.target.value)}
-                    className="w-full p-2.5 border rounded-2xl"
+                    className="w-full p-2.5 border rounded-2xl focus:border-blue-600 focus:outline-hidden"
                   />
                 </div>
 
@@ -360,7 +362,7 @@ export const DiagnosticsPage: React.FC = () => {
                     type="text"
                     value={collectionTime}
                     onChange={(e) => setCollectionTime(e.target.value)}
-                    className="w-full p-2.5 border rounded-2xl"
+                    className="w-full p-2.5 border rounded-2xl focus:border-blue-600 focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -372,7 +374,7 @@ export const DiagnosticsPage: React.FC = () => {
                 <select
                   value={collectionType}
                   onChange={(e) => setCollectionType(e.target.value)}
-                  className="w-full p-2.5 border rounded-2xl bg-white"
+                  className="w-full p-2.5 border rounded-2xl bg-white focus:border-blue-600 focus:outline-hidden cursor-pointer"
                 >
                   <option value="At PHC">At Pollachi Primary Health Centre</option>
                   <option value="Home Sample">Home Sample Collection (ASHA Assisted)</option>
@@ -388,7 +390,7 @@ export const DiagnosticsPage: React.FC = () => {
                   rows={2}
                   value={collectionNotes}
                   onChange={(e) => setCollectionNotes(e.target.value)}
-                  className="w-full p-2.5 border rounded-2xl"
+                  className="w-full p-2.5 border rounded-2xl focus:border-blue-600 focus:outline-hidden"
                   placeholder="Notes for the lab technician..."
                 />
               </div>
@@ -396,7 +398,7 @@ export const DiagnosticsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleSendOrder}
-                className="w-full py-3 rounded-full font-bold text-sm bg-emerald-800 hover:bg-emerald-900 text-white flex items-center justify-center gap-2 shadow-xs transition-all btn-lift mt-2 cursor-pointer"
+                className="w-full py-3 rounded-full font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 shadow-xs transition-all btn-lift mt-2 cursor-pointer"
               >
                 <Send className="w-4 h-4" />
                 <span>Send Test Request</span>
@@ -405,18 +407,7 @@ export const DiagnosticsPage: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Bottom Illustration Banner matching reference design 4 */}
-      <div className="rounded-3xl overflow-hidden border border-emerald-200 shadow-sm relative hover-lift">
-        <img
-          src="/assets/lab_banner.png"
-          alt="Lab Banner"
-          className="w-full h-auto object-cover rounded-3xl"
-          onError={(e) => {
-            (e.target as HTMLElement).style.display = 'none';
-          }}
-        />
-      </div>
     </div>
   );
 };
+

@@ -3,7 +3,7 @@ export type Language = 'en' | 'ta' | 'hi';
 export const translations = {
   en: {
     // Brand
-    brandName: 'CARELINK',
+    brandName: 'CareMizhi',
     brandSubtitle: 'Rural Health Network',
     brandTagline: 'Connecting rural patients to the right care, at the right time.',
     heroTitle: 'Connecting Rural Patients to the Right Care, at the Right Time.',

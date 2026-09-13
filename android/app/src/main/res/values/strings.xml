@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CareMizhi</string>
+    <string name="title_activity_main">CareMizhi</string>
+    <string name="package_name">in.caremizhi.app</string>
+    <string name="custom_url_scheme">in.caremizhi.app</string>
+</resources>

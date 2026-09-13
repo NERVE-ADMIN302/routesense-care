@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local Android toolchain, backups and generated builds
+work/
+releases/
+*.mp4

@@ -213,7 +213,7 @@ export const HealthcareProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       showToast(
         language === 'ta'
           ? `நோயாளி ${created.name} (${created.id}) வெற்றிகரமாக பதிவு செய்யப்பட்டார்!`
-          : `Patient ${created.name} (${created.id}) registered successfully in CARELINK network!`,
+          : `Patient ${created.name} (${created.id}) registered successfully in CareMizhi network!`,
         'success'
       );
     }

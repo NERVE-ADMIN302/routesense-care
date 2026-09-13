@@ -86,6 +86,7 @@ export const ReferralsPage: React.FC = () => {
       estimatedWaitTime: `~${fac.estimatedWaitMins} mins`,
     });
 
+    showToast(`Referral ${created.id} created for ${pat.name}`, 'success');
     setSelectedReferralId(created.id);
     setShowNewRefModal(false);
   };
@@ -97,14 +98,14 @@ export const ReferralsPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center border border-blue-200 shadow-2xs">
-              <ArrowLeftRight className="w-5 h-5" />
+              <ArrowLeftRight className="w-5 h-5 text-blue-600" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-                  Referral Continuity & Tracking
+                  Patient Referrals
                 </h1>
-                <span className="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900">
+                <span className="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900">
                   {referrals.length} System Records
                 </span>
               </div>
@@ -120,7 +121,7 @@ export const ReferralsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowNewRefModal(true)}
-            className="px-4 py-2.5 rounded-full text-xs font-bold border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 flex items-center gap-1.5 cursor-pointer btn-lift"
+            className="px-4 py-2.5 rounded-full text-xs font-bold border border-blue-300 bg-blue-50 text-blue-800 hover:bg-blue-100 flex items-center gap-1.5 cursor-pointer btn-lift transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span>New Referral</span>
@@ -129,8 +130,11 @@ export const ReferralsPage: React.FC = () => {
           {activeRef && (
             <button
               type="button"
-              onClick={() => advanceReferralStage(activeRef.id)}
-              className="px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-2 shadow-sm transition-all hover:scale-102 cursor-pointer btn-lift"
+              onClick={() => {
+                advanceReferralStage(activeRef.id);
+                showToast(`Advanced referral stage for ${activeRef.patientName}`, 'success');
+              }}
+              className="px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 shadow-sm transition-all hover:scale-102 cursor-pointer btn-lift"
             >
               <RotateCw className="w-4 h-4" />
               <span>Progress Next Stage →</span>
@@ -143,13 +147,13 @@ export const ReferralsPage: React.FC = () => {
       <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-2xs space-y-3 hover-lift">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search referrals by ID, patient name, receiving facility..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-full border border-slate-200 text-xs focus:outline-emerald-600"
+              className="w-full pl-9 pr-4 py-2 rounded-full border border-slate-200 text-xs focus:border-blue-600 focus:outline-hidden"
             />
           </div>
 
@@ -159,9 +163,9 @@ export const ReferralsPage: React.FC = () => {
                 key={st}
                 type="button"
                 onClick={() => setFilterStatus(st)}
-                className={`px-3 py-1.5 rounded-full capitalize shrink-0 transition-all ${
+                className={`px-3 py-1.5 rounded-full capitalize shrink-0 transition-all cursor-pointer ${
                   filterStatus === st
-                    ? 'bg-emerald-800 text-white font-bold'
+                    ? 'bg-blue-600 text-white font-bold'
                     : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
@@ -182,7 +186,7 @@ export const ReferralsPage: React.FC = () => {
                   onClick={() => setSelectedReferralId(r.id)}
                   className={`p-3 rounded-2xl border text-xs shrink-0 cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-emerald-700 bg-emerald-50/80 shadow-xs ring-2 ring-emerald-600/30'
+                      ? 'border-blue-600 bg-blue-50/80 shadow-xs ring-2 ring-blue-500/30'
                       : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700'
                   }`}
                 >
@@ -203,14 +207,14 @@ export const ReferralsPage: React.FC = () => {
 
       {activeRef ? (
         /* Main Referral Card */
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-emerald-100 shadow-sm space-y-6 hover-lift">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-blue-100 shadow-sm space-y-6 hover-lift">
           {/* Top bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
             <div className="flex items-center gap-3">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 Referral ID:
               </span>
-              <span className="font-mono text-base font-extrabold text-emerald-900 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              <span className="font-mono text-base font-extrabold text-blue-900 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
                 {activeRef.id}
               </span>
               <StatusBadge status={activeRef.status} size="md" />
@@ -221,9 +225,9 @@ export const ReferralsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setContactModalOpen(true)}
-                className="px-4 py-2 rounded-full text-xs font-bold border border-slate-300 hover:bg-slate-50 text-slate-700 flex items-center gap-1.5 cursor-pointer btn-lift"
+                className="px-4 py-2 rounded-full text-xs font-bold border border-slate-300 hover:bg-slate-50 text-slate-700 flex items-center gap-1.5 cursor-pointer btn-lift transition-colors"
               >
-                <Phone className="w-3.5 h-3.5 text-emerald-700" />
+                <Phone className="w-3.5 h-3.5 text-blue-600" />
                 <span>Contact Facility</span>
               </button>
 
@@ -233,7 +237,7 @@ export const ReferralsPage: React.FC = () => {
                   setSelectedPatientId(activeRef.patientId);
                   navigate(`/patient/${activeRef.patientId}`);
                 }}
-                className="px-4 py-2 rounded-full text-xs font-bold bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs cursor-pointer btn-lift"
+                className="px-4 py-2 rounded-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs cursor-pointer btn-lift transition-colors"
               >
                 View Patient ({activeRef.patientName})
               </button>
@@ -243,7 +247,7 @@ export const ReferralsPage: React.FC = () => {
           {/* Transfer Route Banner */}
           <div className="p-4 rounded-3xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-emerald-800 font-bold shadow-2xs">
+              <div className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-blue-700 font-bold shadow-2xs">
                 PHC
               </div>
               <div>
@@ -255,14 +259,14 @@ export const ReferralsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center text-emerald-700">
-              <div className="h-0.5 w-12 sm:w-20 bg-emerald-300 hidden md:block" />
-              <ArrowRight className="w-5 h-5 mx-2 text-emerald-800" />
-              <div className="h-0.5 w-12 sm:w-20 bg-emerald-300 hidden md:block" />
+            <div className="flex items-center justify-center text-blue-600">
+              <div className="h-0.5 w-12 sm:w-20 bg-blue-200 hidden md:block" />
+              <ArrowRight className="w-5 h-5 mx-2 text-blue-600" />
+              <div className="h-0.5 w-12 sm:w-20 bg-blue-200 hidden md:block" />
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-blue-800 font-bold shadow-2xs">
+              <div className="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-indigo-700 font-bold shadow-2xs">
                 RH
               </div>
               <div>
@@ -299,7 +303,7 @@ export const ReferralsPage: React.FC = () => {
               <span className="text-slate-400 font-bold block text-[10px] uppercase">
                 Scheduled Arrival
               </span>
-              <span className="text-sm font-bold text-emerald-900 mt-0.5 block">
+              <span className="text-sm font-bold text-blue-900 mt-0.5 block">
                 {activeRef.appointmentDate} at {activeRef.appointmentTime}
               </span>
             </div>
@@ -333,7 +337,7 @@ export const ReferralsPage: React.FC = () => {
                 </h3>
                 <p className="text-xs text-slate-400">Click any stage to update and save progress</p>
               </div>
-              <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full">
+              <span className="text-xs font-mono font-bold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-full">
                 Referral #{activeRef.id}
               </span>
             </div>
@@ -346,12 +350,15 @@ export const ReferralsPage: React.FC = () => {
                 return (
                   <div
                     key={idx}
-                    onClick={() => updateReferralStage(activeRef.id, idx)}
+                    onClick={() => {
+                      updateReferralStage(activeRef.id, idx);
+                      showToast(`Referral set to stage: ${stg.stage}`, 'info');
+                    }}
                     className={`p-3.5 rounded-3xl border text-left cursor-pointer transition-all hover-lift ${
                       isCurrent
-                        ? 'border-emerald-700 bg-emerald-50/90 shadow-xs ring-2 ring-emerald-500/20 scale-102'
+                        ? 'border-blue-600 bg-blue-50/90 shadow-xs ring-2 ring-blue-500/20 scale-102'
                         : isCompleted
-                        ? 'border-emerald-200 bg-slate-50 hover:bg-emerald-50/30'
+                        ? 'border-blue-200 bg-slate-50 hover:bg-blue-50/30'
                         : 'border-slate-200 bg-slate-50/40 text-slate-400 hover:bg-slate-100'
                     }`}
                   >
@@ -361,7 +368,7 @@ export const ReferralsPage: React.FC = () => {
                           isCompleted
                             ? 'bg-emerald-600 text-white'
                             : isCurrent
-                            ? 'bg-emerald-900 text-white ring-4 ring-emerald-100'
+                            ? 'bg-blue-600 text-white ring-4 ring-blue-100'
                             : 'bg-slate-200 text-slate-500'
                         }`}
                       >
@@ -372,7 +379,7 @@ export const ReferralsPage: React.FC = () => {
                           isCompleted
                             ? 'bg-emerald-100 text-emerald-800'
                             : isCurrent
-                            ? 'bg-emerald-800 text-white animate-pulse'
+                            ? 'bg-blue-600 text-white animate-pulse'
                             : 'bg-slate-100 text-slate-400'
                         }`}
                       >
@@ -382,7 +389,7 @@ export const ReferralsPage: React.FC = () => {
 
                     <div className="font-bold text-xs text-slate-900">{stg.stage}</div>
                     <div className="text-[10px] text-slate-500 mt-0.5 truncate">{stg.facility}</div>
-                    <div className="text-[9px] text-emerald-800 font-semibold mt-1 truncate">
+                    <div className="text-[9px] text-blue-700 font-semibold mt-1 truncate">
                       {stg.responsibleRole}
                     </div>
                     <div className="text-[9px] text-slate-400 font-mono mt-0.5">{stg.timestamp}</div>
@@ -400,14 +407,14 @@ export const ReferralsPage: React.FC = () => {
 
       {/* New Referral Modal */}
       {showNewRefModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-scale-up text-left">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-scale-up">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 text-left">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900">Create New Digital Referral</h3>
               <button
                 type="button"
                 onClick={() => setShowNewRefModal(false)}
-                className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100 transition-colors"
+                className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -419,7 +426,7 @@ export const ReferralsPage: React.FC = () => {
                 <select
                   value={newPatientId}
                   onChange={(e) => setNewPatientId(e.target.value)}
-                  className="w-full p-2.5 rounded-2xl border text-xs"
+                  className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden cursor-pointer"
                 >
                   {patients.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -434,7 +441,7 @@ export const ReferralsPage: React.FC = () => {
                 <select
                   value={newToFacility}
                   onChange={(e) => setNewToFacility(e.target.value)}
-                  className="w-full p-2.5 rounded-2xl border text-xs"
+                  className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden cursor-pointer"
                 >
                   {facilities.map((f) => (
                     <option key={f.id} value={f.name}>
@@ -451,7 +458,7 @@ export const ReferralsPage: React.FC = () => {
                     type="text"
                     value={newSpeciality}
                     onChange={(e) => setNewSpeciality(e.target.value)}
-                    className="w-full p-2.5 rounded-2xl border text-xs"
+                    className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden"
                     required
                   />
                 </div>
@@ -460,7 +467,7 @@ export const ReferralsPage: React.FC = () => {
                   <select
                     value={newPriority}
                     onChange={(e) => setNewPriority(e.target.value as any)}
-                    className="w-full p-2.5 rounded-2xl border text-xs font-bold"
+                    className="w-full p-2.5 rounded-2xl border text-xs font-bold focus:border-blue-600 focus:outline-hidden cursor-pointer"
                   >
                     <option value="URGENT">URGENT</option>
                     <option value="HIGH">HIGH</option>
@@ -475,7 +482,7 @@ export const ReferralsPage: React.FC = () => {
                   rows={3}
                   value={newReason}
                   onChange={(e) => setNewReason(e.target.value)}
-                  className="w-full p-2.5 rounded-2xl border text-xs"
+                  className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden"
                   placeholder="Clinical notes, diagnostic tests required, urgent indicators..."
                   required
                 />
@@ -485,13 +492,13 @@ export const ReferralsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowNewRefModal(false)}
-                  className="px-4 py-2 border rounded-full font-bold hover:bg-slate-50 transition-colors btn-lift"
+                  className="px-4 py-2 border rounded-full font-bold hover:bg-slate-50 transition-colors btn-lift cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-emerald-800 text-white font-bold rounded-full hover:bg-emerald-900 transition-colors btn-lift"
+                  className="px-5 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors btn-lift cursor-pointer"
                 >
                   Generate Referral Record
                 </button>
@@ -503,31 +510,31 @@ export const ReferralsPage: React.FC = () => {
 
       {/* Facility Contact Modal */}
       {contactModalOpen && activeRef && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 text-left animate-scale-up">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-scale-up">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 text-left">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900">Contact Receiving Facility</h3>
               <button
                 type="button"
                 onClick={() => setContactModalOpen(false)}
-                className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100 transition-colors"
+                className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="p-3.5 rounded-3xl bg-emerald-50 border border-emerald-200">
-                <span className="font-bold text-emerald-900 block text-sm">
+              <div className="p-3.5 rounded-3xl bg-blue-50 border border-blue-200">
+                <span className="font-bold text-blue-900 block text-sm">
                   {activeRef.toFacility}
                 </span>
-                <span className="text-emerald-700">Triage & Inpatient Reception Desk</span>
+                <span className="text-blue-700">Triage & Inpatient Reception Desk</span>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between p-2.5 rounded-2xl border">
                   <span>Direct Referral Hotline:</span>
-                  <span className="font-mono font-bold text-emerald-900">{activeRef.facilityContact}</span>
+                  <span className="font-mono font-bold text-blue-900">{activeRef.facilityContact}</span>
                 </div>
                 <div className="flex items-center justify-between p-2.5 rounded-2xl border">
                   <span>104 Rural Ambulance Desk:</span>
@@ -545,7 +552,7 @@ export const ReferralsPage: React.FC = () => {
                   showToast('Connecting via Government Telephony Gateway...', 'info');
                   setContactModalOpen(false);
                 }}
-                className="w-full py-2.5 bg-emerald-800 text-white font-bold rounded-full mt-3 cursor-pointer btn-lift"
+                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full mt-3 cursor-pointer btn-lift transition-colors"
               >
                 Call Receiving Facility Now
               </button>
@@ -556,3 +563,4 @@ export const ReferralsPage: React.FC = () => {
     </div>
   );
 };
+

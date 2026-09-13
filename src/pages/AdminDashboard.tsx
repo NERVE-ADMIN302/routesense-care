@@ -93,16 +93,16 @@ export const AdminDashboard: React.FC = () => {
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover-lift">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-800 flex items-center justify-center border border-purple-200 shadow-2xs">
-            <ShieldCheck className="w-7 h-7" />
+          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center border border-blue-200 shadow-2xs">
+            <ShieldCheck className="w-7 h-7 text-blue-600" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                District Care Command Center
+                District Command Centre
               </h1>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-900 border border-purple-200">
-                Coimbatore District
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-900 border border-blue-200">
+                Coimbatore Health Grid
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -116,7 +116,7 @@ export const AdminDashboard: React.FC = () => {
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             System Status: Operational
           </div>
-          <div className="text-emerald-700 font-bold mt-0.5">{facilities.length} Active Node Facilities • {patients.length} Live Patients</div>
+          <div className="text-blue-700 font-bold mt-0.5">{facilities.length} Active Node Facilities • {patients.length} Live Patients</div>
         </div>
       </div>
 
@@ -126,14 +126,14 @@ export const AdminDashboard: React.FC = () => {
         <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs hover-lift animate-fade-in-up delay-100">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase text-slate-400">Patients Served</span>
-            <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100">
-              <Users className="w-4 h-4 text-emerald-600" />
+            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center border border-blue-100">
+              <Users className="w-4 h-4 text-blue-600" />
             </div>
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
             {totalPatientsCount.toLocaleString()}
           </div>
-          <div className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1 mt-1">
+          <div className="text-[11px] text-blue-600 font-semibold flex items-center gap-1 mt-1">
             <TrendingUp className="w-3 h-3" />
             <span>+{patients.length} newly registered records</span>
           </div>
@@ -159,15 +159,15 @@ export const AdminDashboard: React.FC = () => {
         <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs hover-lift animate-fade-in-up delay-200">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase text-slate-400">Pending Referrals</span>
-            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center border border-blue-100">
-              <ArrowLeftRight className="w-4 h-4 text-blue-600" />
+            <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center border border-sky-100">
+              <ArrowLeftRight className="w-4 h-4 text-sky-600" />
             </div>
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-blue-700 mt-2">
             {pendingReferralsCount}
           </div>
           <div className="text-[11px] text-blue-600 font-semibold flex items-center gap-1 mt-1">
-            <span>{referrals.filter((r) => r.priority === 'URGENT').length} urgent transfer route</span>
+            <span>{referrals.filter((r) => r.priority === 'URGENT').length} urgent transfer routes</span>
           </div>
         </div>
 
@@ -188,7 +188,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Hero Section: Care Bottlenecks — "Where is the healthcare system getting stuck?" */}
+      {/* Hero Section: Care Bottlenecks */}
       <div className="bg-white rounded-3xl p-6 border-2 border-amber-200 shadow-sm space-y-4 hover-lift animate-fade-in-up delay-150">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-amber-900 font-extrabold">
@@ -225,7 +225,7 @@ export const AdminDashboard: React.FC = () => {
                     {b.severity} Priority
                   </span>
                 </div>
-                <div className="text-[11px] font-semibold text-emerald-900 mt-0.5 flex items-center gap-1">
+                <div className="text-[11px] font-semibold text-blue-900 mt-0.5 flex items-center gap-1">
                   <Building2 className="w-3 h-3 text-slate-400" />
                   <span>{b.facility}</span>
                 </div>
@@ -236,7 +236,7 @@ export const AdminDashboard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => showToast(`Executing operational action: ${b.action}`, 'success')}
-                  className="px-4 py-2 rounded-full bg-slate-900 hover:bg-black text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer btn-lift shadow-sm"
+                  className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer btn-lift shadow-sm transition-colors"
                 >
                   <span>{b.action}</span>
                   <ArrowRight className="w-3 h-3" />
@@ -254,11 +254,11 @@ export const AdminDashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-slate-900">
-                District Referral Continuity Funnel
+                Referral Progress Funnel
               </h3>
               <p className="text-xs text-slate-500">Live multi-tier progression from PHC triage to specialist follow-up</p>
             </div>
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+            <span className="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
               Closed Loop
             </span>
           </div>
@@ -270,7 +270,7 @@ export const AdminDashboard: React.FC = () => {
                 <XAxis type="number" tick={{ fontSize: 11 }} />
                 <YAxis dataKey="stage" type="category" width={120} tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#064e3b" radius={[0, 12, 12, 0]} />
+                <Bar dataKey="count" fill="#2478ed" radius={[0, 12, 12, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -285,7 +285,7 @@ export const AdminDashboard: React.FC = () => {
               </h3>
               <p className="text-xs text-slate-500">Outpatient encounters and assisted specialist teleconsultations</p>
             </div>
-            <span className="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+            <span className="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
               Active Network
             </span>
           </div>
@@ -297,7 +297,7 @@ export const AdminDashboard: React.FC = () => {
                 <XAxis dataKey="day" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Area type="monotone" dataKey="patients" stroke="#064e3b" fill="#a7f3d0" fillOpacity={0.4} />
+                <Area type="monotone" dataKey="patients" stroke="#1a6ee1" fill="#93c5fd" fillOpacity={0.4} />
                 <Area type="monotone" dataKey="teleconsults" stroke="#3b82f6" fill="#bfdbfe" fillOpacity={0.4} />
               </AreaChart>
             </ResponsiveContainer>
@@ -312,7 +312,7 @@ export const AdminDashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-slate-900">
-                Coimbatore District Facility Network Map
+                District Node Telemetry & GIS Grid
               </h3>
               <p className="text-xs text-slate-500">
                 Click any facility node to view real-time triage capacity, waiting times, and medicine stock
@@ -336,19 +336,19 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           {/* Interactive Vector Topology Map */}
-          <div className="relative w-full h-80 rounded-3xl bg-gradient-to-br from-emerald-950 via-[#062c25] to-slate-900 overflow-hidden border border-emerald-900/60 p-4 select-none shadow-inner">
+          <div className="relative w-full h-80 rounded-3xl bg-gradient-to-br from-[#0a1e3b] via-[#0e294b] to-[#123661] overflow-hidden border border-blue-900/60 p-4 select-none shadow-inner">
             {/* Connected Roads */}
             <svg className="absolute inset-0 w-full h-full opacity-25" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#34d399" strokeWidth="0.5" />
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#60a5fa" strokeWidth="0.5" />
                 </pattern>
               </defs>
               <rect width="100%" height="100%" fill="url(#grid)" />
-              <path d="M 120 280 Q 200 210 260 180 T 400 70" fill="none" stroke="#10b981" strokeWidth="2.5" strokeDasharray="5,5" />
-              <path d="M 260 180 L 330 130 L 400 70" fill="none" stroke="#38bdf8" strokeWidth="2" />
-              <path d="M 260 180 L 170 230 L 140 280" fill="none" stroke="#a7f3d0" strokeWidth="1.5" />
-              <path d="M 260 180 L 450 190" fill="none" stroke="#a7f3d0" strokeWidth="1.5" />
+              <path d="M 120 280 Q 200 210 260 180 T 400 70" fill="none" stroke="#38bdf8" strokeWidth="2.5" strokeDasharray="5,5" />
+              <path d="M 260 180 L 330 130 L 400 70" fill="none" stroke="#60a5fa" strokeWidth="2" />
+              <path d="M 260 180 L 170 230 L 140 280" fill="none" stroke="#93c5fd" strokeWidth="1.5" />
+              <path d="M 260 180 L 450 190" fill="none" stroke="#93c5fd" strokeWidth="1.5" />
             </svg>
 
             {/* Render Nodes */}
@@ -374,7 +374,7 @@ export const AdminDashboard: React.FC = () => {
                     />
                     <div
                       className={`w-7 h-7 rounded-full border-2 border-white flex items-center justify-center shadow-lg transition-transform group-hover:scale-125 ${colorBg} ${
-                        isSelected ? 'scale-125 ring-4 ring-emerald-300' : ''
+                        isSelected ? 'scale-125 ring-4 ring-blue-300' : ''
                       }`}
                     >
                       <Building2 className="w-3.5 h-3.5 text-white" />
@@ -385,7 +385,7 @@ export const AdminDashboard: React.FC = () => {
                   <div
                     className={`mt-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold whitespace-nowrap shadow-md transition-all ${
                       isSelected
-                        ? 'bg-white text-emerald-950 ring-2 ring-emerald-400'
+                        ? 'bg-white text-blue-950 ring-2 ring-blue-400'
                         : 'bg-black/70 text-slate-200 group-hover:bg-white group-hover:text-black'
                     }`}
                   >
@@ -424,29 +424,29 @@ export const AdminDashboard: React.FC = () => {
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-100 text-center">
-                <span className="text-[10px] uppercase font-bold text-emerald-700 block">
+              <div className="p-3.5 rounded-2xl bg-blue-50/60 border border-blue-100 text-center">
+                <span className="text-[10px] uppercase font-bold text-blue-700 block">
                   Wait Time
                 </span>
-                <span className="text-lg font-extrabold text-emerald-800">
+                <span className="text-lg font-extrabold text-blue-800">
                   {currentNode.wait}
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-purple-50/60 border border-purple-100 text-center">
-                <span className="text-[10px] uppercase font-bold text-purple-700 block">
+              <div className="p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-100 text-center">
+                <span className="text-[10px] uppercase font-bold text-indigo-700 block">
                   Drug Stock
                 </span>
-                <span className="text-lg font-extrabold text-purple-800">
+                <span className="text-lg font-extrabold text-indigo-800">
                   {currentNode.stock}
                 </span>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs space-y-1">
-              <span className="font-bold text-emerald-950 block">Care Match Integration</span>
-              <p className="text-emerald-900 leading-relaxed">
-                Direct teleconsultation and Care Match scoring enabled for this node. Average triage-to-referral acceptance time is 11.4 mins.
+            <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-xs space-y-1">
+              <span className="font-bold text-blue-950 block">Care Match Integration</span>
+              <p className="text-blue-900 leading-relaxed">
+                Direct teleconsultation and Care Match routing enabled for this node. Average triage-to-referral acceptance time is 11.4 mins.
               </p>
             </div>
           </div>
@@ -454,7 +454,7 @@ export const AdminDashboard: React.FC = () => {
           <button
             type="button"
             onClick={() => showToast(`Auditing inventory and referral log for ${currentNode.name}...`, 'info')}
-            className="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs rounded-full shadow-xs cursor-pointer btn-lift"
+            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-full shadow-xs cursor-pointer btn-lift transition-colors"
           >
             Audit Facility Telemetry & Diagnostics
           </button>
@@ -463,3 +463,4 @@ export const AdminDashboard: React.FC = () => {
     </div>
   );
 };
+

@@ -1,0 +1,32 @@
+.terrain-access { background: #fff; border: 1px solid #d9e6e2; border-radius: 20px; overflow: hidden; }
+.terrain-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; padding:26px; background:linear-gradient(110deg,#f0f8f4,#f9fbfa); }
+.terrain-eyebrow { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:700; letter-spacing:.12em; color:#367366; }
+.terrain-heading h2 { font-size:28px; margin:8px 0; }
+.terrain-heading p,.terrain-note { color:#637973; font-size:13px; line-height:1.7; }
+.terrain-demo { padding:7px 11px; border:1px solid #d3e2d9; border-radius:20px; font-size:11px; color:#537166; flex-shrink:0; }
+.terrain-stages { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); padding:20px 26px; border-bottom:1px solid #e4ece8; gap:16px; }
+.terrain-stages > div { display:flex; align-items:center; gap:12px; color:#276d60; }
+.terrain-stages svg { flex-shrink:0; }.terrain-stages strong { display:block; font-size:12px; }.terrain-stages small { display:block; font-size:11px; color:#73837e; margin-top:3px; }
+.terrain-scenarios { display:flex; flex-wrap:wrap; gap:8px; padding:22px 26px 0; }
+.terrain-scenarios button { font:inherit; font-size:12px; padding:9px 14px; border:1px solid #dce6e1; border-radius:30px; color:#587066; cursor:pointer; background:white; }
+.terrain-scenarios button[aria-pressed=true] { background:#245f54; color:white; border-color:#245f54; }
+.terrain-access button:focus-visible { outline:3px solid #61ae9c; outline-offset:3px; }
+.terrain-grid { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:26px; padding:26px; }
+.terrain-map-title { display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:14px; font-size:14px; }.terrain-map-title span { font-size:10px; color:#7b8983; }
+.terrain-map { width:100%; height:auto; font-family:inherit; }
+.terrain-origin { font-size:11px; color:#6c8076; margin:10px 0 16px; }
+.terrain-detections { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+.terrain-detections > div { padding:10px; background:#f4f8f5; border-radius:9px; }.terrain-detections span { display:block; text-transform:capitalize; color:#77867e; font-size:11px; }.terrain-detections strong { display:block; font-size:11px; color:#315648; margin-top:5px; }
+.terrain-note { margin-top:15px; font-size:12px; }.terrain-terrain { display:flex; align-items:flex-start; gap:9px; border-top:1px solid #e4ece8; padding-top:14px; margin-top:14px; color:#728178; font-size:11px; line-height:1.7; }.terrain-terrain svg { flex-shrink:0; margin-top:3px; }.terrain-terrain strong { display:block; color:#476357; }
+.terrain-results > h3 { font-size:16px; margin-bottom:14px; }.terrain-facility { border:1px solid #e1e7e3; border-radius:12px; padding:16px; margin-bottom:12px; }.terrain-chosen { border-color:#8ab9a3; background:#f6fbf7; }
+.terrain-facility-top { display:flex; gap:9px; align-items:center; font-size:12px; }.terrain-facility-top > strong { flex:1; }.terrain-facility-top > span:last-child { white-space:nowrap; color:#6d7f75; }.terrain-letter { display:grid; place-items:center; width:25px; height:25px; background:#eaf1ec; border-radius:7px; flex-shrink:0; }
+.terrain-facility p { display:flex; align-items:center; gap:7px; font-size:12px; margin:12px 0; color:#377462; }.terrain-facility p.terrain-blocked { color:#a6573d; }.terrain-capabilities { display:flex; flex-wrap:wrap; gap:6px 13px; color:#6b7e73; font-size:10px; }
+.terrain-recommendation { border-radius:12px; background:#edf6f0; padding:18px; }.terrain-recommendation h3 { font-size:18px; margin:9px 0; }.terrain-recommendation p { font-size:12px; line-height:1.7; color:#64796d; }.terrain-recommendation button { display:flex; gap:8px; align-items:center; background:#245f54; color:white; border-radius:24px; padding:10px 15px; font-size:12px; margin-top:14px; cursor:pointer; }
+.terrain-footer { padding:18px 26px; background:#f8faf8; border-top:1px solid #e3eae5; display:flex; flex-direction:column; gap:7px; }.terrain-footer strong { font-size:13px; color:#395b4b; }.terrain-footer span { font-size:11px; color:#7a897f; line-height:1.6; }
+@media(max-width:1200px) { .terrain-grid { grid-template-columns:1fr; } }
+@media(max-width:640px) { .terrain-heading { flex-direction:column; padding:20px; }.terrain-heading h2 { font-size:24px; }.terrain-stages { grid-template-columns:repeat(2,minmax(0,1fr)); padding:20px; }.terrain-grid { padding:20px; gap:20px; }.terrain-scenarios { padding-inline:20px; }.terrain-detections { grid-template-columns:repeat(2,minmax(0,1fr)); }.terrain-map-title { flex-wrap:wrap; }.terrain-footer { padding:20px; } }
+.kerala-map { display:block; width:100%; height:410px; border:1px solid #d8e5df; border-radius:14px; background:#edf4ef; }
+.kerala-hospital-links { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+.kerala-hospital-links a { font-size:11px; padding:7px 10px; border:1px solid #d5e4da; border-radius:20px; color:#246650; background:#f4faf6; }
+.kerala-hospital-links a:hover { background:#e2f1e8; }
+@media(max-width:640px) { .kerala-map { height:350px; } }

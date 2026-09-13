@@ -16,10 +16,7 @@ import {
   Brain,
   Baby,
   MoreHorizontal,
-  Check,
-  Save,
   Mic,
-  MicOff,
   Volume2,
   ArrowRight,
   ShieldCheck,
@@ -28,7 +25,6 @@ import {
 import { useHealthcare, TriageFormValues } from '../context/HealthcareContext';
 import { useApp } from '../context/AppContext';
 import { PatientHeader } from '../components/common/PatientHeader';
-import { CareJourneyStepper } from '../components/common/CareJourneyStepper';
 
 export const SmartTriagePage: React.FC = () => {
   const navigate = useNavigate();
@@ -44,7 +40,6 @@ export const SmartTriagePage: React.FC = () => {
   } = useHealthcare();
   const { t, language, showToast } = useApp();
 
-  // Active patient for triage
   const currentPatient = patients.find((p) => p.id === patientIdParam) || selectedPatient;
 
   // Form state
@@ -63,7 +58,6 @@ export const SmartTriagePage: React.FC = () => {
   const [voiceSpokenText, setVoiceSpokenText] = useState('');
   const [latestResult, setLatestResult] = useState<ReturnType<typeof getPatientTriage>>(undefined);
 
-  // Sync state when currentPatient changes
   useEffect(() => {
     if (patientIdParam && patientIdParam !== selectedPatient.id) {
       setSelectedPatientId(patientIdParam);
@@ -120,7 +114,7 @@ export const SmartTriagePage: React.FC = () => {
     setSpo2(currentPatient.vitals.spo2);
     setRespRate(currentPatient.vitals.respRate || 18);
     setWeight(currentPatient.vitals.weight || 60);
-    showToast(`Applied latest vitals recorded for ${currentPatient.name}`, 'info');
+    showToast(`Applied recorded baseline vitals for ${currentPatient.name}`, 'info');
   };
 
   const handleVoiceSimulation = () => {
@@ -141,7 +135,7 @@ export const SmartTriagePage: React.FC = () => {
 
       setAdditionalDetails('Voice symptom intake: Acute shortness of breath, fever, and cough.');
       setIsListeningVoice(false);
-      showToast('Voice symptoms transcribed & mapped to clinical fields!', 'success');
+      showToast('Voice symptoms transcribed & mapped to clinical fields', 'success');
     }, 1500);
   };
 
@@ -162,6 +156,7 @@ export const SmartTriagePage: React.FC = () => {
       };
       const result = runAiTriageForPatient(currentPatient.id, values);
       setLatestResult(result);
+      showToast(`Triage assessment complete: ${result.priority} priority`, 'success');
     }, 600);
   };
 
@@ -172,7 +167,7 @@ export const SmartTriagePage: React.FC = () => {
         <button
           type="button"
           onClick={() => navigate(`/patient/${currentPatient.id}`)}
-          className="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition-colors cursor-pointer"
+          className="text-xs font-bold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to {currentPatient.name}'s Profile</span>
@@ -187,7 +182,7 @@ export const SmartTriagePage: React.FC = () => {
       {/* Patient Switcher */}
       <div className="bg-white p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <User className="w-4 h-4 text-emerald-800" />
+          <User className="w-4 h-4 text-blue-600" />
           <span className="text-xs font-bold text-slate-700">Active Patient for Triage:</span>
         </div>
         <select
@@ -196,11 +191,11 @@ export const SmartTriagePage: React.FC = () => {
             setSelectedPatientId(e.target.value);
             navigate(`/triage?patientId=${e.target.value}`);
           }}
-          className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-bold text-slate-800 cursor-pointer focus:border-emerald-700"
+          className="px-4 py-2 rounded-full border border-slate-200 bg-white text-xs font-bold text-slate-800 cursor-pointer focus:border-blue-600"
         >
           {patients.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.name} ({p.id}) • {p.age}y {p.gender} • {p.riskStatus}
+              {p.name} ({p.id}) • {p.age}y {p.gender} • {p.riskStatus} Risk
             </option>
           ))}
         </select>
@@ -209,7 +204,7 @@ export const SmartTriagePage: React.FC = () => {
       {/* Page Title & Medical Framing */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-800 flex items-center justify-center border border-teal-200 shadow-2xs">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-500 text-white flex items-center justify-center shadow-xs">
             <Stethoscope className="w-5 h-5" />
           </div>
           <div>
@@ -217,7 +212,7 @@ export const SmartTriagePage: React.FC = () => {
               <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
                 {t('smartTriageTitle')}
               </h1>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900">
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900">
                 Decision Support
               </span>
             </div>
@@ -249,22 +244,22 @@ export const SmartTriagePage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleVoiceSimulation}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                   isListeningVoice
                     ? 'bg-rose-600 text-white animate-pulse'
-                    : 'bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200'
+                    : 'bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200'
                 }`}
               >
-                {isListeningVoice ? <Mic className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                <span>{isListeningVoice ? 'Transcribing Voice...' : 'Voice Symptom Intake'}</span>
+                {isListeningVoice ? <Mic className="w-3.5 h-3.5 animate-bounce" /> : <Volume2 className="w-3.5 h-3.5 text-blue-600" />}
+                <span>{isListeningVoice ? 'Listening...' : 'Voice Intake'}</span>
               </button>
             </div>
 
             {voiceSpokenText && (
-              <div className="p-3 rounded-2xl bg-teal-50/70 border border-teal-200 text-xs text-teal-950 flex items-center justify-between">
-                <span>{voiceSpokenText}</span>
-                <span className="text-[10px] font-bold uppercase text-teal-700 bg-white px-2 py-0.5 rounded-full">
-                  AI Transcribed
+              <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 text-xs text-blue-950 flex items-center justify-between animate-fade-in-up">
+                <span className="font-medium italic">{voiceSpokenText}</span>
+                <span className="text-[10px] font-bold uppercase text-blue-700 bg-white px-2 py-0.5 rounded-full border border-blue-200 shrink-0 ml-2">
+                  Voice Transcribed
                 </span>
               </div>
             )}
@@ -280,11 +275,11 @@ export const SmartTriagePage: React.FC = () => {
                     onClick={() => toggleSymptom(sym.id)}
                     className={`p-3 rounded-2xl border text-left flex items-center gap-2.5 transition-all cursor-pointer ${
                       selected
-                        ? 'bg-emerald-900 text-white border-emerald-900 shadow-xs font-bold'
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-xs font-bold'
                         : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200 font-medium'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${selected ? 'text-emerald-300' : 'text-slate-500'}`} />
+                    <Icon className={`w-4 h-4 ${selected ? 'text-blue-100' : 'text-slate-500'}`} />
                     <span className="text-xs truncate">{sym.label}</span>
                   </button>
                 );
@@ -299,8 +294,8 @@ export const SmartTriagePage: React.FC = () => {
                 rows={2}
                 value={additionalDetails}
                 onChange={(e) => setAdditionalDetails(e.target.value)}
-                placeholder="Describe duration, severity, onset triggers, productive sputum, etc..."
-                className="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs text-slate-800"
+                placeholder="Describe duration, severity, onset triggers, productive sputum..."
+                className="w-full px-3.5 py-2.5 rounded-2xl border border-slate-200 text-xs text-slate-800"
               />
             </div>
           </div>
@@ -319,7 +314,7 @@ export const SmartTriagePage: React.FC = () => {
                   value={bp}
                   onChange={(e) => setBp(e.target.value)}
                   placeholder="120/80"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold"
                 />
               </div>
 
@@ -332,8 +327,8 @@ export const SmartTriagePage: React.FC = () => {
                   placeholder="98"
                   min="50"
                   max="100"
-                  className={`w-full px-3 py-1.5 rounded-xl border text-xs font-bold ${
-                    spo2 < 93 ? 'border-rose-400 bg-rose-50/50 text-rose-800' : 'border-slate-200'
+                  className={`w-full px-3 py-2 rounded-xl border text-xs font-bold ${
+                    spo2 < 93 ? 'border-rose-400 bg-rose-50 text-rose-800 font-extrabold' : 'border-slate-200'
                   }`}
                 />
               </div>
@@ -345,7 +340,7 @@ export const SmartTriagePage: React.FC = () => {
                   value={pulse}
                   onChange={(e) => setPulse(Number(e.target.value))}
                   placeholder="76"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold"
                 />
               </div>
 
@@ -357,7 +352,7 @@ export const SmartTriagePage: React.FC = () => {
                   value={temp}
                   onChange={(e) => setTemp(Number(e.target.value))}
                   placeholder="98.6"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold"
                 />
               </div>
 
@@ -368,7 +363,7 @@ export const SmartTriagePage: React.FC = () => {
                   value={respRate}
                   onChange={(e) => setRespRate(Number(e.target.value))}
                   placeholder="18"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold"
                 />
               </div>
 
@@ -379,7 +374,7 @@ export const SmartTriagePage: React.FC = () => {
                   value={weight}
                   onChange={(e) => setWeight(Number(e.target.value))}
                   placeholder="60"
-                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold"
                 />
               </div>
             </div>
@@ -390,9 +385,9 @@ export const SmartTriagePage: React.FC = () => {
                 type="button"
                 onClick={handleRunTriage}
                 disabled={isAnalyzing}
-                className="w-full py-3.5 px-6 rounded-full font-extrabold text-sm sm:text-base bg-emerald-800 hover:bg-emerald-900 text-white flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer btn-lift"
+                className="w-full py-3.5 px-6 rounded-full font-bold text-sm sm:text-base bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer btn-lift"
               >
-                <Sparkles className={`w-5 h-5 text-emerald-300 ${isAnalyzing ? 'animate-spin' : ''}`} />
+                <Sparkles className={`w-5 h-5 text-blue-200 ${isAnalyzing ? 'animate-spin' : ''}`} />
                 <span>{isAnalyzing ? 'Calculating Decision Support...' : 'Run AI-Assisted Triage Assessment'}</span>
               </button>
             </div>
@@ -438,7 +433,7 @@ export const SmartTriagePage: React.FC = () => {
                 {(latestResult?.riskIndicators || [
                   'Oxygen saturation and vitals will be analyzed against clinical threshold algorithms',
                 ]).map((ind, i) => (
-                  <div key={i} className="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-700 flex items-start gap-2">
+                  <div key={i} className="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-700 flex items-start gap-2 font-medium">
                     <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
                     <span>{ind}</span>
                   </div>
@@ -454,7 +449,7 @@ export const SmartTriagePage: React.FC = () => {
                 </h4>
                 <div className="space-y-1.5">
                   {latestResult.conditions.map((c, i) => (
-                    <div key={i} className="flex items-center justify-between p-2 rounded-xl bg-slate-50 text-xs">
+                    <div key={i} className="flex items-center justify-between p-2 rounded-xl bg-slate-50 text-xs font-medium">
                       <span className="font-semibold text-slate-800">{c.name}</span>
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                         c.risk === 'High' ? 'bg-rose-100 text-rose-700' : 'bg-slate-200 text-slate-700'
@@ -474,7 +469,7 @@ export const SmartTriagePage: React.FC = () => {
                 <span>Clinical Decision Support Only</span>
               </div>
               <p className="text-[11px] leading-relaxed">
-                This system identifies clinical risk indicators to assist healthcare frontline workers in patient prioritization and care routing. It does not provide autonomous medical diagnosis.
+                This system identifies clinical risk indicators to assist frontline healthcare workers in patient prioritization and care routing. It does not provide autonomous medical diagnosis.
               </p>
             </div>
 
@@ -484,10 +479,11 @@ export const SmartTriagePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate(`/care-match?patientId=${currentPatient.id}`)}
-                  className="w-full py-3 px-4 rounded-full font-bold text-xs bg-emerald-800 hover:bg-emerald-900 text-white flex items-center justify-center gap-2 shadow-xs cursor-pointer btn-lift"
+                  className="w-full py-3 px-4 rounded-full font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 shadow-xs cursor-pointer btn-lift"
                 >
-                  <Sparkles className="w-4 h-4 text-emerald-300" />
-                  <span>Execute Intelligent Care Match &gt;</span>
+                  <Sparkles className="w-4 h-4 text-blue-200" />
+                  <span>Find Suitable Hospital Care</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   type="button"

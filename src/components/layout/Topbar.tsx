@@ -16,8 +16,6 @@ import {
   Clock,
   RotateCw,
   Building2,
-  Home,
-  LogOut,
 } from 'lucide-react';
 import { useApp, UserRole } from '../../context/AppContext';
 import { useHealthcare } from '../../context/HealthcareContext';
@@ -83,11 +81,10 @@ export const Topbar: React.FC<TopbarProps> = ({ onMobileMenuToggle }) => {
   };
 
   const facilities = [
-    'Pollachi Primary Health Centre',
-    'Rural Hospital — Pollachi',
-    'Anaimalai Community Health Centre',
-    'Coimbatore District Headquarters Hospital',
-    'Kinathukadavu Upgraded PHC',
+    'Government Medical College, Thrissur',
+    'Government Medical College, Ernakulam',
+    'Government Medical College, Kozhikode',
+    'Government Medical College, Thiruvananthapuram',
   ];
 
   // Route-to-header title mapping
@@ -103,12 +100,12 @@ export const Topbar: React.FC<TopbarProps> = ({ onMobileMenuToggle }) => {
     if (path.includes('/follow-ups')) return { title: 'High-Risk Follow-ups', subtitle: 'ASHA home visit logs and clinical escalations' };
     if (path.includes('/appointments')) return { title: 'Facility Appointments', subtitle: 'OPD slots and specialist consultation schedule' };
     if (path.includes('/diagnostics')) return { title: 'Diagnostics & Lab Orders', subtitle: 'Inter-facility test orders and verified results' };
-    if (path.includes('/medicine-availability') || path.includes('/medicine')) return { title: 'Drug Stock & Availability', subtitle: 'Real-time inventory across Coimbatore network' };
+    if (path.includes('/medicine-availability') || path.includes('/medicine')) return { title: 'Drug Stock & Availability', subtitle: 'Kerala network · Demo inventory' };
     if (path.includes('/admin')) return { title: 'District Command Center', subtitle: 'District-wide public health KPIs and care bottlenecks' };
     if (path.includes('/register')) return { title: 'Register Patient', subtitle: 'Offline-first frontline intake and consent' };
     if (path.includes('/reports')) return { title: 'Program Reports', subtitle: 'SIH 26133 performance analytics and indicators' };
     if (path.includes('/education')) return { title: 'Health Education', subtitle: 'Multilingual frontline guidelines and awareness' };
-    return { title: 'CARELINK Care Network', subtitle: 'Connecting rural patients to the right care, at the right time.' };
+    return { title: 'CareMizhi Care Network', subtitle: 'Connecting rural patients to the right care, at the right time.' };
   };
 
   const pageDetails = getPageDetails();
@@ -158,7 +155,7 @@ export const Topbar: React.FC<TopbarProps> = ({ onMobileMenuToggle }) => {
 
   return (
     <>
-      <header className="bg-white border border-slate-200/80 rounded-3xl px-4 sm:px-6 py-3 flex items-center justify-between gap-3 shadow-xs select-none shrink-0">
+      <header className="reference-topbar bg-white border border-slate-200/80 rounded-3xl px-4 sm:px-6 py-3 flex items-center justify-between gap-3 shadow-xs select-none shrink-0">
         {/* Left Side: Mobile Menu + Contextual Page Title (Matches screenshot) */}
         <div className="flex items-center gap-3 min-w-0">
           <button
@@ -182,7 +179,7 @@ export const Topbar: React.FC<TopbarProps> = ({ onMobileMenuToggle }) => {
         {/* Right Section Controls (Matches screenshot) */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {/* Search Input with Instant Dropdown (Hidden on small mobile) */}
-          <div ref={searchRef} className="relative hidden xl:block w-48">
+          <div ref={searchRef} className="reference-search relative hidden xl:block w-48">
             <div className="relative flex items-center">
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 pointer-events-none" />
               <input
@@ -314,15 +311,6 @@ export const Topbar: React.FC<TopbarProps> = ({ onMobileMenuToggle }) => {
             </button>
           </div>
 
-          {/* Landing Page Home Nav Button */}
-          <NavLink
-            to="/"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 border border-slate-200 text-slate-700 text-xs font-bold transition-all shrink-0"
-            title="Go back to Landing Page"
-          >
-            <Home className="w-3.5 h-3.5 text-emerald-700" />
-            <span className="hidden md:inline">Landing Page</span>
-          </NavLink>
 
           {/* LIVE Pill (Matches screenshot) */}
           <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">
@@ -456,23 +444,6 @@ export const Topbar: React.FC<TopbarProps> = ({ onMobileMenuToggle }) => {
                   </div>
                 </button>
 
-                {/* Return to Landing Page */}
-                <div className="pt-2 mt-2 border-t border-slate-100">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setProfileOpen(false);
-                      navigate('/');
-                    }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-rose-700 hover:bg-rose-50 flex items-center gap-2.5 transition-colors cursor-pointer"
-                  >
-                    <LogOut className="w-4 h-4 text-slate-500 group-hover:text-rose-600" />
-                    <div>
-                      <div>Exit to Landing Page</div>
-                      <div className="text-[10px] text-slate-400 font-normal">Return to portal welcome screen</div>
-                    </div>
-                  </button>
-                </div>
               </div>
             )}
           </div>

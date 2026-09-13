@@ -10,18 +10,17 @@ export const DemoFlowBar: React.FC = () => {
   const [minimized, setMinimized] = useState(false);
 
   const demoSteps = [
-    { step: 1, name: 'Landing Page', short: 'Landing', path: '/' },
-    { step: 2, name: 'ASHA Dashboard', short: 'ASHA', path: '/dashboard' },
-    { step: 3, name: 'Register Ravi', short: 'Register', path: '/register' },
-    { step: 4, name: 'Smart Triage', short: 'Triage', path: '/triage' },
-    { step: 5, name: 'Care Match', short: 'Care Match', path: '/care-match' },
-    { step: 6, name: 'Patient Overview', short: 'Patient', path: '/patient/CL-02491' },
-    { step: 7, name: 'Doctor Teleconsult', short: 'Doctor', path: '/teleconsultation' },
-    { step: 8, name: 'Referral Tracking', short: 'Referral', path: '/referrals' },
-    { step: 9, name: 'Follow-up Due', short: 'Follow-up', path: '/follow-ups' },
-    { step: 10, name: 'Diagnostics', short: 'Diagnostics', path: '/diagnostics' },
-    { step: 11, name: 'Medicine Stock', short: 'Pharmacy', path: '/medicine-availability' },
-    { step: 12, name: 'Command Center', short: 'Admin', path: '/admin' },
+    { step: 1, name: 'ASHA Dashboard', short: 'ASHA', path: '/dashboard' },
+    { step: 2, name: 'Register Ravi', short: 'Register', path: '/register' },
+    { step: 3, name: 'Smart Triage', short: 'Triage', path: '/triage' },
+    { step: 4, name: 'Care Match', short: 'Care Match', path: '/care-match' },
+    { step: 5, name: 'Patient Overview', short: 'Patient', path: '/patient/CL-02491' },
+    { step: 6, name: 'Doctor Teleconsult', short: 'Doctor', path: '/teleconsultation' },
+    { step: 7, name: 'Referral Tracking', short: 'Referral', path: '/referrals' },
+    { step: 8, name: 'Follow-up Due', short: 'Follow-up', path: '/follow-ups' },
+    { step: 9, name: 'Diagnostics', short: 'Diagnostics', path: '/diagnostics' },
+    { step: 10, name: 'Medicine Stock', short: 'Pharmacy', path: '/medicine-availability' },
+    { step: 11, name: 'Command Center', short: 'Admin', path: '/admin' },
   ];
 
   // Find current step index
@@ -50,10 +49,10 @@ export const DemoFlowBar: React.FC = () => {
         type="button"
         onClick={() => setMinimized(false)}
         className="fixed bottom-4 left-4 z-50 bg-emerald-950 text-white px-4 py-2 rounded-full shadow-xl border border-emerald-700 flex items-center gap-2 text-xs font-bold hover:bg-emerald-900 transition-all cursor-pointer animate-fade-in-up btn-lift"
-        title="Expand CARELINK Golden Demo Bar"
+        title="Expand CareMizhi Golden Demo Bar"
       >
         <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-        <span>CARELINK Demo (Step {activeIndex + 1}/12)</span>
+        <span>CareMizhi Demo (Step {activeIndex + 1}/{demoSteps.length})</span>
         <Maximize2 className="w-3 h-3 text-emerald-300" />
       </button>
     );
@@ -69,10 +68,10 @@ export const DemoFlowBar: React.FC = () => {
         </span>
         <div className="flex items-center gap-1.5">
           <span className="font-black text-emerald-300 tracking-wider uppercase text-[10px] sm:text-[11px]">
-            CARELINK DEMO
+            CareMizhi DEMO
           </span>
           <span className="bg-emerald-800/80 text-emerald-200 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">
-            Step {activeIndex + 1} / 12
+            Step {activeIndex + 1} / {demoSteps.length}
           </span>
           <span className="text-emerald-100 font-bold text-xs hidden md:inline">
             • {currentStep.name}

@@ -60,7 +60,7 @@ export const FollowUpsPage: React.FC = () => {
   });
 
   const handleCall = (name: string, phone: string) => {
-    showToast(`Calling ${name} (${phone}) via frontline telephony...`, 'info');
+    showToast(`Calling ${name} (${phone}) via frontline telephony gateway...`, 'info');
   };
 
   const handleOutcome = (id: string, name: string, outcome: FollowUpCase['outcome']) => {
@@ -96,6 +96,7 @@ export const FollowUpsPage: React.FC = () => {
       notes: newNotes,
     });
 
+    showToast(`Follow-up scheduled for ${pat.name} on ${targetDate}`, 'success');
     setShowScheduleModal(false);
   };
 
@@ -105,15 +106,15 @@ export const FollowUpsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-200 shadow-2xs">
-              <Heart className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center border border-blue-200 shadow-2xs">
+              <Heart className="w-5 h-5 text-blue-600" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-                  Community Follow-up & Continuity
+                  Patient Follow-ups
                 </h1>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900">
                   Closed-Loop Care
                 </span>
               </div>
@@ -132,17 +133,17 @@ export const FollowUpsPage: React.FC = () => {
           <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200">
             {dueTodayCount} Due Today
           </span>
-          <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+          <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">
             {scheduledCount} Scheduled
           </span>
-          <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+          <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
             {completedCount} Completed
           </span>
 
           <button
             type="button"
             onClick={() => setShowScheduleModal(true)}
-            className="px-4 py-2 rounded-full text-xs font-bold bg-emerald-800 hover:bg-emerald-900 text-white flex items-center gap-1.5 shadow-xs transition-all cursor-pointer btn-lift ml-2"
+            className="px-4 py-2 rounded-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shadow-xs transition-all cursor-pointer btn-lift ml-2"
           >
             <Plus className="w-4 h-4" />
             <span>Schedule Follow-up</span>
@@ -154,13 +155,13 @@ export const FollowUpsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-3.5 rounded-3xl border border-slate-200/80 shadow-2xs hover-lift">
         <div className="flex items-center gap-2 flex-1 max-w-md">
           <div className="relative w-full">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search by patient name, ID, condition..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 rounded-full border border-slate-200 text-xs focus:outline-emerald-600"
+              className="w-full pl-9 pr-3 py-1.5 rounded-full border border-slate-200 text-xs focus:border-blue-600 focus:outline-hidden"
             />
           </div>
         </div>
@@ -173,7 +174,7 @@ export const FollowUpsPage: React.FC = () => {
               onClick={() => setCategoryFilter(cat)}
               className={`px-3.5 py-1.5 rounded-full transition-all shrink-0 cursor-pointer ${
                 categoryFilter === cat
-                  ? 'bg-emerald-900 text-white font-bold shadow-xs'
+                  ? 'bg-blue-600 text-white font-bold shadow-xs'
                   : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -188,7 +189,7 @@ export const FollowUpsPage: React.FC = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-1 rounded-full border border-slate-200 bg-white text-xs font-medium"
+            className="px-3 py-1 rounded-full border border-slate-200 bg-white text-xs font-medium cursor-pointer"
           >
             <option value="All">All</option>
             <option value="Due Today">Due Today</option>
@@ -213,7 +214,7 @@ export const FollowUpsPage: React.FC = () => {
                   : item.status === 'Due Today'
                   ? 'border-amber-300 ring-2 ring-amber-100'
                   : isRavi
-                  ? 'border-emerald-300 ring-2 ring-emerald-50 shadow-xs'
+                  ? 'border-blue-300 ring-2 ring-blue-50 shadow-xs'
                   : 'border-slate-200/80 shadow-xs'
               }`}
             >
@@ -226,7 +227,7 @@ export const FollowUpsPage: React.FC = () => {
                           setSelectedPatientId(item.patientId);
                           navigate(`/patient/${item.patientId}`);
                         }}
-                        className="text-base font-bold text-slate-900 hover:text-emerald-800 cursor-pointer"
+                        className="text-base font-bold text-slate-900 hover:text-blue-600 cursor-pointer transition-colors"
                       >
                         {item.patientName}
                       </h3>
@@ -281,7 +282,7 @@ export const FollowUpsPage: React.FC = () => {
                           ? 'text-rose-700'
                           : item.status === 'Due Today'
                           ? 'text-amber-700'
-                          : 'text-emerald-900'
+                          : 'text-blue-900'
                       }`}
                     >
                       {item.nextFollowUp}
@@ -297,11 +298,11 @@ export const FollowUpsPage: React.FC = () => {
 
               {/* Patient Outcome & Action Controls */}
               <div className="space-y-3 pt-4 mt-4 border-t border-slate-100">
-                <div className="flex items-center justify-between">
+                <div className="followup-outcomes flex items-center justify-between">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Record Patient Outcome:
                   </span>
-                  <div className="flex items-center gap-1.5">
+                  <div className="followup-outcome-buttons flex items-center gap-1.5">
                     <button
                       type="button"
                       onClick={() => handleOutcome(item.id, item.patientName, 'Improved')}
@@ -330,9 +331,9 @@ export const FollowUpsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleCall(item.patientName, item.phone)}
-                    className="px-4 py-2 rounded-full text-xs font-bold border border-slate-300 hover:bg-slate-50 text-slate-700 flex items-center gap-1.5 cursor-pointer btn-lift"
+                    className="px-4 py-2 rounded-full text-xs font-bold border border-slate-300 hover:bg-slate-50 text-slate-700 flex items-center gap-1.5 cursor-pointer btn-lift transition-colors"
                   >
-                    <Phone className="w-3.5 h-3.5 text-emerald-700" />
+                    <Phone className="w-3.5 h-3.5 text-blue-600" />
                     <span>Call</span>
                   </button>
 
@@ -342,7 +343,7 @@ export const FollowUpsPage: React.FC = () => {
                       setSelectedPatientId(item.patientId);
                       navigate(`/patient/${item.patientId}`);
                     }}
-                    className="px-4 py-2 rounded-full text-xs font-bold bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs cursor-pointer btn-lift"
+                    className="px-4 py-2 rounded-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs cursor-pointer btn-lift transition-colors"
                   >
                     View Care Continuum
                   </button>
@@ -355,14 +356,14 @@ export const FollowUpsPage: React.FC = () => {
 
       {/* Schedule Follow-up Modal */}
       {showScheduleModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-scale-up text-left">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-scale-up">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 text-left">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900">Schedule Frontline Follow-up Visit</h3>
               <button
                 type="button"
                 onClick={() => setShowScheduleModal(false)}
-                className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100 transition-colors"
+                className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -374,7 +375,7 @@ export const FollowUpsPage: React.FC = () => {
                 <select
                   value={newPatientId}
                   onChange={(e) => setNewPatientId(e.target.value)}
-                  className="w-full p-2.5 rounded-2xl border text-xs"
+                  className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden cursor-pointer"
                 >
                   {patients.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -390,7 +391,7 @@ export const FollowUpsPage: React.FC = () => {
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value as any)}
-                    className="w-full p-2.5 rounded-2xl border text-xs font-bold"
+                    className="w-full p-2.5 rounded-2xl border text-xs font-bold focus:border-blue-600 focus:outline-hidden cursor-pointer"
                   >
                     <option value="High Risk">High Risk</option>
                     <option value="Maternal">Maternal</option>
@@ -403,7 +404,7 @@ export const FollowUpsPage: React.FC = () => {
                   <select
                     value={newDays}
                     onChange={(e) => setNewDays(Number(e.target.value))}
-                    className="w-full p-2.5 rounded-2xl border text-xs"
+                    className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden cursor-pointer"
                   >
                     <option value={1}>1 Day (Tomorrow)</option>
                     <option value={3}>3 Days</option>
@@ -420,7 +421,7 @@ export const FollowUpsPage: React.FC = () => {
                   type="text"
                   value={newCondition}
                   onChange={(e) => setNewCondition(e.target.value)}
-                  className="w-full p-2.5 rounded-2xl border text-xs"
+                  className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden"
                   required
                 />
               </div>
@@ -431,7 +432,7 @@ export const FollowUpsPage: React.FC = () => {
                   type="text"
                   value={newWorker}
                   onChange={(e) => setNewWorker(e.target.value)}
-                  className="w-full p-2.5 rounded-2xl border text-xs"
+                  className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden"
                   required
                 />
               </div>
@@ -442,7 +443,7 @@ export const FollowUpsPage: React.FC = () => {
                   rows={3}
                   value={newNotes}
                   onChange={(e) => setNewNotes(e.target.value)}
-                  className="w-full p-2.5 rounded-2xl border text-xs"
+                  className="w-full p-2.5 rounded-2xl border text-xs focus:border-blue-600 focus:outline-hidden"
                   placeholder="Specific vitals to check, medicine adherence, danger signs..."
                   required
                 />
@@ -452,13 +453,13 @@ export const FollowUpsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowScheduleModal(false)}
-                  className="px-4 py-2 border rounded-full font-bold hover:bg-slate-50 transition-colors btn-lift"
+                  className="px-4 py-2 border rounded-full font-bold hover:bg-slate-50 transition-colors btn-lift cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-emerald-800 text-white font-bold rounded-full hover:bg-emerald-900 transition-colors btn-lift"
+                  className="px-5 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors btn-lift cursor-pointer"
                 >
                   Assign & Schedule Visit
                 </button>
@@ -470,3 +471,4 @@ export const FollowUpsPage: React.FC = () => {
     </div>
   );
 };
+
