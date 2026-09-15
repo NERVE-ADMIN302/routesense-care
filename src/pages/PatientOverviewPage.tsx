@@ -282,7 +282,7 @@ export const PatientOverviewPage: React.FC = () => {
       {activeTab === 'consultations' && (
         <div className="space-y-4 animate-fade-in-up">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">CLINICAL TELECONSULTATIONS</h3>
+            <h3 className="text-base font-bold text-slate-900">Clinical Teleconsultations</h3>
             <button
               type="button"
               onClick={() => navigate(`/teleconsultation?patientId=${selectedPatient.id}`)}
@@ -343,7 +343,7 @@ export const PatientOverviewPage: React.FC = () => {
       {activeTab === 'diagnostics' && (
         <div className="space-y-4 animate-fade-in-up">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">DIAGNOSTIC ORDERS &amp; LABORATORY TESTS</h3>
+            <h3 className="text-base font-bold text-slate-900">Diagnostic Orders & Laboratory Tests</h3>
             <button
               type="button"
               onClick={() => navigate('/diagnostics')}
@@ -396,7 +396,7 @@ export const PatientOverviewPage: React.FC = () => {
       {activeTab === 'referrals' && (
         <div className="space-y-4 animate-fade-in-up">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">REFERRAL HISTORY</h3>
+            <h3 className="text-base font-bold text-slate-900">Referral History</h3>
             <button
               type="button"
               onClick={() => navigate(`/care-match?patientId=${selectedPatient.id}`)}
@@ -455,7 +455,7 @@ export const PatientOverviewPage: React.FC = () => {
       {activeTab === 'followups' && (
         <div className="space-y-4 animate-fade-in-up">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">COMMUNITY HOME FOLLOW-UP VISITS</h3>
+            <h3 className="text-base font-bold text-slate-900">Community Home Follow-up Visits</h3>
             <button
               type="button"
               onClick={() => navigate('/follow-ups')}

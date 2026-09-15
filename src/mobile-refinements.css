@@ -20,9 +20,7 @@
 
 .brand-logo-icon {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   overflow: hidden;
   flex: none;
   width: 44px;
@@ -30,13 +28,16 @@
   border-radius: 14px;
   background: white;
   box-shadow: 0 4px 12px rgba(36, 120, 237, 0.15);
-  padding: 4px;
 }
 
 .brand-logo-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  max-width: none;
+  left: -18px;
+  top: -6px;
+  clip-path: inset(0 0 42% 0);
 }
 
 .brand-name {
@@ -930,32 +931,4 @@
   margin-bottom: 24px !important;
   font-size: 14.5px !important;
 }
-
-/* 10. English Main Headings & Sideheadings Uppercase Enforcement */
-.section-heading h2,
-.section-heading h3,
-.section-heading h4,
-.card-header h3,
-.card-header h4,
-.modal-header h3,
-.sideheading,
-.main-heading-label,
-.app-pages .section-heading h2,
-.app-pages .section-heading h3,
-.app-pages th,
-.table th,
-.card-subheading,
-.eyebrow,
-.quiet-pill {
-  text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-}
-
-.app-pages h2.font-bold,
-.app-pages h2.font-extrabold,
-.app-pages h3.font-bold,
-.app-pages h3.font-extrabold {
-  letter-spacing: 0.03em;
-}
-
 

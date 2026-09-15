@@ -68,11 +68,11 @@ export const LandingPage = () => {
       {/* Top Application Header */}
       <header className="flex items-center justify-between px-5 pt-4 pb-3 z-20">
         <div className="flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200/80 shadow-xs shrink-0 bg-white flex items-center justify-center p-0.5">
+          <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200/80 shadow-xs shrink-0 bg-white">
             <img
-              src="/assets/caremizhi-symbol.png"
+              src="/assets/caremizhi-logo.jpg"
               alt="CareMizhi Emblem"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
           <div>
@@ -205,8 +205,8 @@ export const LandingPage = () => {
         {/* Title & Security Status */}
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-5">
           <div>
-            <h2 className="text-[22px] sm:text-[24px] font-extrabold text-[#0d2238] tracking-wider uppercase">
-              WELCOME TO CAREMIZHI
+            <h2 className="text-[23px] sm:text-[25px] font-extrabold text-[#0d2238] tracking-tight">
+              Welcome to CareMizhi.
             </h2>
             <p className="text-[13px] text-[#64748b] mt-0.5 leading-relaxed">
               Choose your clinical or administrative role to enter the workspace.

@@ -275,7 +275,7 @@ export const AppointmentsPage: React.FC = () => {
 
             <div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                MORNING SLOTS
+                Morning Slots
               </span>
               <div className="grid grid-cols-3 gap-2">
                 {morningSlots.map((slot) => (
@@ -297,7 +297,7 @@ export const AppointmentsPage: React.FC = () => {
 
             <div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                AFTERNOON SLOTS
+                Afternoon Slots
               </span>
               <div className="grid grid-cols-3 gap-2">
                 {afternoonSlots.map((slot) => (
@@ -334,8 +334,8 @@ export const AppointmentsPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <CalendarIcon className="w-5 h-5 text-blue-600" />
-            <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">
-              PATIENT APPOINTMENTS ({filteredAppointments.length})
+            <h3 className="text-base font-bold text-slate-900">
+              Patient Appointments ({filteredAppointments.length})
             </h3>
           </div>
 

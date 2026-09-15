@@ -5,7 +5,7 @@ import { AppProvider } from './context/AppContext';
 import { HealthcareProvider } from './context/HealthcareContext';
 import { AppLayout } from './components/layout/AppLayout';
 
-import { AppOpening } from './components/common/AppOpening';
+import { LandingPage } from './pages/LandingPage';
 import { HealthWorkerDashboard } from './pages/HealthWorkerDashboard';
 import { RegisterPatientPage } from './pages/RegisterPatientPage';
 import { PatientsListPage } from './pages/PatientsListPage';
@@ -31,8 +31,8 @@ export const App: React.FC = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<AppLayout />}>
-              {/* Animated Intro & Landing Page */}
-              <Route index element={<AppOpening />} />
+              {/* Landing Page */}
+              <Route index element={<LandingPage />} />
 
               {/* Main App Routes */}
               <Route path="services" element={<ServicesPage />} /><Route path="notifications" element={<NotificationsPage />} /><Route path="dashboard" element={<HealthWorkerDashboard />} />

@@ -113,7 +113,7 @@ export const HealthWorkerDashboard: React.FC = () => {
 
       {/* Overview Metrics */}
       <div className="section-heading">
-        <h2>YOUR OVERVIEW</h2>
+        <h2>Your overview</h2>
         <span className="quiet-pill">
           {isOffline ? 'Offline Demo' : 'Connected Network'}
         </span>
@@ -130,7 +130,7 @@ export const HealthWorkerDashboard: React.FC = () => {
           </span>
           <ArrowUpRight className="metric-arrow" size={17} />
           <strong>{patients.length}</strong>
-          <span>PATIENTS IN CARE</span>
+          <span>Patients in care</span>
         </button>
 
         <button
@@ -143,13 +143,13 @@ export const HealthWorkerDashboard: React.FC = () => {
           </span>
           <ArrowUpRight className="metric-arrow" size={17} />
           <strong>{due}</strong>
-          <span>FOLLOW-UPS DUE</span>
+          <span>Follow-ups due</span>
         </button>
       </div>
 
       {/* Quick Actions */}
       <div className="section-heading">
-        <h2>QUICK ACTIONS</h2>
+        <h2>Quick actions</h2>
         <button type="button" onClick={() => navigate('/services')}>
           <span>View all tools</span>
           <ArrowRight size={15} />
@@ -220,7 +220,7 @@ export const HealthWorkerDashboard: React.FC = () => {
 
       {/* Recent Patients Stack */}
       <div className="section-heading">
-        <h2>RECENT PATIENTS</h2>
+        <h2>Recent patients</h2>
         <button type="button" onClick={() => navigate('/patients')}>
           <span>See all</span>
           <ArrowRight size={15} />

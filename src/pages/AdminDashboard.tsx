@@ -253,8 +253,8 @@ export const AdminDashboard: React.FC = () => {
         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-200">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">
-                REFERRAL PROGRESS FUNNEL
+              <h3 className="text-base font-bold text-slate-900">
+                Referral Progress Funnel
               </h3>
               <p className="text-xs text-slate-500">Live multi-tier progression from PHC triage to specialist follow-up</p>
             </div>
@@ -280,8 +280,8 @@ export const AdminDashboard: React.FC = () => {
         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-250">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">
-                WEEKLY PATIENT &amp; TELEHEALTH TRENDS
+              <h3 className="text-base font-bold text-slate-900">
+                Weekly Patient & Telehealth Trends
               </h3>
               <p className="text-xs text-slate-500">Outpatient encounters and assisted specialist teleconsultations</p>
             </div>
@@ -311,8 +311,8 @@ export const AdminDashboard: React.FC = () => {
         <div className="lg:col-span-7 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-300">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">
-                DISTRICT NODE TELEMETRY &amp; GIS GRID
+              <h3 className="text-base font-bold text-slate-900">
+                District Node Telemetry & GIS Grid
               </h3>
               <p className="text-xs text-slate-500">
                 Click any facility node to view real-time triage capacity, waiting times, and medicine stock
