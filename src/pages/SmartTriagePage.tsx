@@ -264,7 +264,7 @@ export const SmartTriagePage: React.FC = () => {
               </div>
             )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {symptomList.map((sym) => {
                 const Icon = sym.icon;
                 const selected = symptoms.includes(sym.id);
@@ -273,14 +273,14 @@ export const SmartTriagePage: React.FC = () => {
                     key={sym.id}
                     type="button"
                     onClick={() => toggleSymptom(sym.id)}
-                    className={`p-3 rounded-2xl border text-left flex items-center gap-2.5 transition-all cursor-pointer ${
+                    className={`p-3.5 rounded-2xl border text-left flex items-center gap-2.5 min-h-[52px] transition-all cursor-pointer ${
                       selected
                         ? 'bg-blue-600 text-white border-blue-600 shadow-xs font-bold'
                         : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200 font-medium'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${selected ? 'text-blue-100' : 'text-slate-500'}`} />
-                    <span className="text-xs truncate">{sym.label}</span>
+                    <Icon className={`w-4 h-4 shrink-0 ${selected ? 'text-blue-100' : 'text-slate-500'}`} />
+                    <span className="text-xs leading-snug break-words">{sym.label}</span>
                   </button>
                 );
               })}

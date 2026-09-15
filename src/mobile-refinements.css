@@ -20,7 +20,9 @@
 
 .brand-logo-icon {
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   flex: none;
   width: 44px;
@@ -28,16 +30,13 @@
   border-radius: 14px;
   background: white;
   box-shadow: 0 4px 12px rgba(36, 120, 237, 0.15);
+  padding: 4px;
 }
 
 .brand-logo-icon img {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  max-width: none;
-  left: -18px;
-  top: -6px;
-  clip-path: inset(0 0 42% 0);
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .brand-name {
@@ -755,3 +754,208 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ==========================================================================
+   APP-WIDE MOBILE ERGONOMICS, TOUCH TARGETS & SPACING UPGRADES
+   ========================================================================== */
+
+/* 1. Page & Container Spacing */
+.app-pages {
+  padding: 18px 20px calc(112px + env(safe-area-inset-bottom)) !important;
+}
+
+.home-screen,
+.services-screen,
+.patients-screen {
+  padding-bottom: 24px;
+}
+
+.section-heading {
+  margin: 26px 0 16px !important;
+}
+
+.section-heading > button {
+  min-height: 44px !important;
+  padding: 8px 14px !important;
+  font-size: 13px !important;
+  border-radius: 12px;
+}
+
+/* 2. Accessible Touch Targets (Minimum 44px) */
+.circle-button {
+  min-width: 44px !important;
+  min-height: 44px !important;
+}
+
+.patient-filters {
+  gap: 10px !important;
+  margin-bottom: 16px !important;
+}
+
+.patient-filters select {
+  min-height: 46px !important;
+  padding: 10px 14px !important;
+  font-size: 13.5px !important;
+  border-radius: 16px !important;
+}
+
+/* 3. Quick Action Cards Breathing Room */
+.quick-grid {
+  gap: 12px !important;
+}
+
+.quick-grid button {
+  padding: 18px 10px !important;
+  min-height: 94px !important;
+  border-radius: 24px !important;
+  gap: 10px !important;
+}
+
+.quick-grid b {
+  font-size: 12.5px !important;
+  line-height: 1.25;
+}
+
+.quick-grid small {
+  font-size: 10.5px !important;
+}
+
+/* 4. Attention & Alert Cards */
+.attention-card {
+  padding: 18px 18px !important;
+  gap: 14px !important;
+  margin-top: 24px !important;
+  border-radius: 26px !important;
+}
+
+.attention-card .circle-button {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+/* 5. Patient Stack and Lists */
+.patient-stack {
+  padding: 8px 20px !important;
+}
+
+.patient-stack > button {
+  padding: 16px 4px !important;
+  min-height: 60px !important;
+  gap: 16px !important;
+}
+
+/* 6. Form Inputs & Textareas (No auto-zoom, ample thumb area) */
+.app-pages input:not([type="checkbox"]):not([type="radio"]),
+.app-pages select,
+.app-pages textarea {
+  min-height: 48px !important;
+  font-size: 14.5px !important;
+  padding: 11px 16px !important;
+  line-height: 1.5 !important;
+  border-radius: 18px !important;
+}
+
+.app-pages label {
+  font-size: 13px !important;
+  margin-bottom: 6px !important;
+  color: #334155 !important;
+  font-weight: 700 !important;
+}
+
+/* 7. Hospital & Care Cards */
+.hospital-card {
+  padding: 24px !important;
+  border-radius: 28px !important;
+}
+
+.hospital-capabilities {
+  gap: 12px !important;
+  margin: 18px 0 !important;
+}
+
+.hospital-capabilities > div {
+  padding: 14px !important;
+  border-radius: 18px !important;
+}
+
+.hospital-actions {
+  gap: 12px !important;
+  margin-top: 20px !important;
+}
+
+.hospital-actions button {
+  min-height: 50px !important;
+  font-size: 14.5px !important;
+  border-radius: 18px !important;
+}
+
+.hospital-links button,
+.hospital-links a {
+  min-height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 8px 6px !important;
+}
+
+/* 8. Table Cells & Mobile Readability */
+.app-pages table th {
+  padding: 12px 14px !important;
+  font-size: 11px !important;
+}
+
+.app-pages table td {
+  padding: 14px 14px !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+/* 9. General Visual Hierarchy & Contrast */
+.eyebrow {
+  letter-spacing: 1.4px;
+  font-size: 11px;
+  margin-bottom: 10px !important;
+}
+
+.greeting {
+  margin: 10px 0 16px !important;
+}
+
+.workspace-label {
+  margin-bottom: 22px !important;
+}
+
+.search-launch {
+  min-height: 54px !important;
+  padding: 14px 18px !important;
+  margin-bottom: 24px !important;
+  font-size: 14.5px !important;
+}
+
+/* 10. English Main Headings & Sideheadings Uppercase Enforcement */
+.section-heading h2,
+.section-heading h3,
+.section-heading h4,
+.card-header h3,
+.card-header h4,
+.modal-header h3,
+.sideheading,
+.main-heading-label,
+.app-pages .section-heading h2,
+.app-pages .section-heading h3,
+.app-pages th,
+.table th,
+.card-subheading,
+.eyebrow,
+.quiet-pill {
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+.app-pages h2.font-bold,
+.app-pages h2.font-extrabold,
+.app-pages h3.font-bold,
+.app-pages h3.font-extrabold {
+  letter-spacing: 0.03em;
+}
+
+

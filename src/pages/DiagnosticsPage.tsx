@@ -169,7 +169,7 @@ export const DiagnosticsPage: React.FC = () => {
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-100">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-base font-bold text-slate-900">Diagnostic Catalog</h3>
+                <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">DIAGNOSTIC CATALOG</h3>
                 <p className="text-xs text-slate-500">Select test panels or individual diagnostic tests</p>
               </div>
 
@@ -295,7 +295,7 @@ export const DiagnosticsPage: React.FC = () => {
           {/* Recent Test History */}
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4 hover-lift animate-fade-in-up delay-200">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold text-slate-900">Patient Test Orders ({patientDiagnostics.length})</h3>
+              <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">PATIENT TEST ORDERS ({patientDiagnostics.length})</h3>
               <button
                 type="button"
                 onClick={() => navigate('/reports')}

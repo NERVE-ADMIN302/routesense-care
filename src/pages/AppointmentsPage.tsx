@@ -275,7 +275,7 @@ export const AppointmentsPage: React.FC = () => {
 
             <div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                Morning Slots
+                MORNING SLOTS
               </span>
               <div className="grid grid-cols-3 gap-2">
                 {morningSlots.map((slot) => (
@@ -297,7 +297,7 @@ export const AppointmentsPage: React.FC = () => {
 
             <div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                Afternoon Slots
+                AFTERNOON SLOTS
               </span>
               <div className="grid grid-cols-3 gap-2">
                 {afternoonSlots.map((slot) => (
@@ -334,8 +334,8 @@ export const AppointmentsPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <CalendarIcon className="w-5 h-5 text-blue-600" />
-            <h3 className="text-base font-bold text-slate-900">
-              Patient Appointments ({filteredAppointments.length})
+            <h3 className="text-base font-bold text-slate-900 uppercase tracking-wider">
+              PATIENT APPOINTMENTS ({filteredAppointments.length})
             </h3>
           </div>
 
@@ -367,8 +367,80 @@ export const AppointmentsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
+        {/* Responsive Mobile Cards View */}
+        <div className="block md:hidden space-y-3">
+          {filteredAppointments.length === 0 ? (
+            <div className="p-8 text-center text-slate-500 text-xs font-medium">
+              No appointments found matching your search or filter.
+            </div>
+          ) : (
+            filteredAppointments.map((apt) => (
+              <div
+                key={apt.id}
+                className="p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedPatientId(apt.patientId);
+                        navigate(`/patient/${apt.patientId}`);
+                      }}
+                      className="font-bold text-sm text-slate-900 hover:text-blue-600 text-left cursor-pointer transition-colors block"
+                    >
+                      {apt.patientName}
+                    </button>
+                    <span className="text-[11px] text-slate-500 font-mono">
+                      {apt.patientId} &bull; {apt.ageGender}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="px-2.5 py-1 rounded-full bg-blue-100/70 text-blue-800 font-mono font-bold text-xs">
+                      {apt.time}
+                    </span>
+                    <StatusBadge status={apt.status} size="sm" />
+                  </div>
+                </div>
+
+                <div className="text-xs text-slate-700 bg-white p-2.5 rounded-xl border border-slate-100">
+                  <div className="font-semibold text-slate-900 mb-0.5">{apt.type}</div>
+                  <div className="text-slate-600 leading-relaxed">{apt.reason}</div>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/60">
+                  <span className="text-[11px] text-slate-500 font-medium">Status action:</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextStatus =
+                        apt.status === 'Checked In'
+                          ? 'In Progress'
+                          : apt.status === 'In Progress'
+                          ? 'Completed'
+                          : 'Checked In';
+                      updateAppointmentStatus(apt.id, nextStatus);
+                      showToast(`Status updated to ${nextStatus}`, 'success');
+                    }}
+                    className="min-h-[40px] px-4 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold flex items-center gap-1.5 border border-blue-200 transition-colors cursor-pointer"
+                  >
+                    <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                    <span>
+                      {apt.status === 'Checked In'
+                        ? 'Begin Visit'
+                        : apt.status === 'In Progress'
+                        ? 'Mark Completed'
+                        : 'Check In'}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
@@ -384,10 +456,10 @@ export const AppointmentsPage: React.FC = () => {
             <tbody className="divide-y divide-slate-100">
               {filteredAppointments.map((apt) => (
                 <tr key={apt.id} className="hover:bg-slate-50/80 transition-colors">
-                  <td data-label="Time" className="py-3 px-3 font-mono font-bold text-slate-800">
+                  <td data-label="Time" className="py-3.5 px-3 font-mono font-bold text-slate-800">
                     {apt.time}
                   </td>
-                  <td data-label="Patient" className="py-3 px-3">
+                  <td data-label="Patient" className="py-3.5 px-3">
                     <button
                       type="button"
                       onClick={() => {
@@ -402,19 +474,19 @@ export const AppointmentsPage: React.FC = () => {
                       </span>
                     </button>
                   </td>
-                  <td data-label="Age / Gender" className="py-3 px-3 text-slate-600 font-medium">
+                  <td data-label="Age / Gender" className="py-3.5 px-3 text-slate-600 font-medium">
                     {apt.ageGender}
                   </td>
-                  <td data-label="Type" className="py-3 px-3">
+                  <td data-label="Type" className="py-3.5 px-3">
                     <span className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold text-[11px] border border-slate-200/60">
                       {apt.type}
                     </span>
                   </td>
-                  <td data-label="Reason" className="py-3 px-3 text-slate-700">{apt.reason}</td>
-                  <td data-label="Status" className="py-3 px-3">
+                  <td data-label="Reason" className="py-3.5 px-3 text-slate-700">{apt.reason}</td>
+                  <td data-label="Status" className="py-3.5 px-3">
                     <StatusBadge status={apt.status} size="sm" />
                   </td>
-                  <td data-label="Actions" className="py-3 px-3 text-right">
+                  <td data-label="Actions" className="py-3.5 px-3 text-right">
                     <button
                       type="button"
                       onClick={() => {

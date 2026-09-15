@@ -1,52 +1,108 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { LandingPage } from '../../pages/LandingPage';
 import './AppOpening.css';
 
-const INTRO_SEEN = 'caremizhi:opening:20260913';
-const HOLD_MS = 1600;
-const FADE_MS = 900;
+const INTRO_STORAGE_KEY = 'caremizhi:intro:20260915';
+const AUTO_DISMISS_MS = 4500; // Auto-transition after 4.5s
+const EXIT_TRANSITION_MS = 600;
 
 export function AppOpening() {
-  const video = useRef<HTMLVideoElement>(null);
-  const closing = useRef(false);
-  const [finished, setFinished] = useState(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
-    try { return sessionStorage.getItem(INTRO_SEEN) === 'yes'; } catch { return false; }
+  const [showIntro, setShowIntro] = useState(() => {
+    // Check reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return false;
+    }
+    // Check if seen in current session
+    try {
+      return sessionStorage.getItem(INTRO_STORAGE_KEY) !== 'seen';
+    } catch {
+      return true;
+    }
   });
-  const [holding, setHolding] = useState(false);
-  const [exiting, setExiting] = useState(false);
-  const finish = useCallback(() => {
-    if (closing.current) return;
-    closing.current = true;
-    video.current?.pause();
-    try { sessionStorage.setItem(INTRO_SEEN, 'yes'); } catch { /* Optional session storage. */ }
-    setExiting(true);
-  }, []);
+
+  const [isExiting, setIsExiting] = useState(false);
+
+  const handleFinish = useCallback(() => {
+    if (isExiting) return;
+    setIsExiting(true);
+    try {
+      sessionStorage.setItem(INTRO_STORAGE_KEY, 'seen');
+    } catch {
+      // Ignore storage errors
+    }
+    window.setTimeout(() => {
+      setShowIntro(false);
+    }, EXIT_TRANSITION_MS);
+  }, [isExiting]);
+
   useEffect(() => {
-    if (!holding) return;
-    const timer = window.setTimeout(finish, HOLD_MS);
+    if (!showIntro) return;
+    const timer = window.setTimeout(handleFinish, AUTO_DISMISS_MS);
     return () => window.clearTimeout(timer);
-  }, [holding, finish]);
-  useEffect(() => {
-    if (!exiting) return;
-    const timer = window.setTimeout(() => setFinished(true), FADE_MS);
-    return () => window.clearTimeout(timer);
-  }, [exiting]);
-  useEffect(() => {
-    if (finished) return;
-    let active = true;
-    video.current?.play().catch(() => { if (active) finish(); });
-    // A stalled or unsupported animation must never trap someone outside the app.
-    const timer = window.setTimeout(finish, 45000);
-    return () => { active = false; window.clearTimeout(timer); };
-  }, [finished, finish]);
-  return <>
-    <div className="app-opening-landing" inert={!finished} aria-hidden={!finished}><LandingPage /></div>
-    {!finished && <section className={`app-opening${exiting ? ' app-opening-exit' : ''}`} aria-label="CareMizhi opening animation">
-      <img className="opening-brand-placeholder" src="/assets/caremizhi-logo.jpg" alt="" aria-hidden="true"/>
-      <video ref={video} className="app-opening-video" src="/media/caremizhi-opening.mp4"
-        autoPlay muted playsInline preload="auto" controls={false} disablePictureInPicture disableRemotePlayback
-        tabIndex={-1} aria-hidden="true" onEnded={() => setHolding(true)} onError={finish}/>
-    </section>}
-  </>;
+  }, [showIntro, handleFinish]);
+
+  return (
+    <>
+      {/* Landing Page pre-rendered for instant seamless reveal */}
+      <div className="w-full min-h-full">
+        <LandingPage />
+      </div>
+
+      {/* Animated Intro Overlay matching the Video */}
+      {showIntro && (
+        <div
+          className={`caremizhi-intro-overlay ${isExiting ? 'intro-exit' : ''}`}
+          onClick={handleFinish}
+          role="dialog"
+          aria-label="CareMizhi Animated Introduction"
+        >
+          {/* Ambient Glow Atmosphere */}
+          <div className="intro-ambient-glow" />
+
+          {/* Skip Button */}
+          <button
+            type="button"
+            className="intro-skip-pill"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFinish();
+            }}
+            aria-label="Skip introduction animation"
+          >
+            Skip &rarr;
+          </button>
+
+          {/* Animation Stage */}
+          <div className="intro-stage">
+            {/* 1. Circular Emblem with Drone Beam and Cross Aura */}
+            <div className="intro-emblem-wrap intro-emblem-float">
+              <img
+                src="/assets/caremizhi-symbol.png"
+                alt="CareMizhi Symbol"
+                className="intro-emblem-img select-none pointer-events-none"
+              />
+
+              {/* Glowing Drone Light Beam */}
+              <div className="intro-drone-beam" />
+
+              {/* Medical Cross Pulsing Aura */}
+              <div className="intro-cross-glow" />
+            </div>
+
+            {/* 2. "CareMizhi" Wordmark with Shimmer Sweep */}
+            <div className="intro-wordmark-wrap">
+              <img
+                src="/assets/caremizhi-wordmark.png"
+                alt="CareMizhi"
+                className="intro-wordmark-img select-none pointer-events-none"
+              />
+              <div className="intro-wordmark-shimmer" />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
+
+export default AppOpening;

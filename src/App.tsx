@@ -31,7 +31,7 @@ export const App: React.FC = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<AppLayout />}>
-              {/* Landing Page */}
+              {/* Animated Intro & Landing Page */}
               <Route index element={<AppOpening />} />
 
               {/* Main App Routes */}

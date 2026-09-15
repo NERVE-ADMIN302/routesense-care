@@ -142,7 +142,7 @@ export const PatientsListPage: React.FC = () => {
       </div>
 
       <div className="section-heading">
-        <h2>Patient records</h2>
+        <h2>PATIENT RECORDS</h2>
         <span className="quiet-pill">{filtered.length} found</span>
       </div>
 
